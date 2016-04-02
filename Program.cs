@@ -14,7 +14,9 @@ namespace FindingMotifDiscord
 			float[] data = dataLoader.readFile (fileName);
 
 			// passing data to motif finder
-			MotifFinder motifFinder = new MotifFinder(data);
+			const int slidingWindow = 5;
+			const float R = 0.01f;
+			AbstractMotifFinder motifFinder = new MotifFinder(data, 5, R);
 			int motifLoc;
 			int[] motifMatches;
 
