@@ -107,5 +107,14 @@ namespace FindingMotifDiscord
 			}
 		}*/
 	}
+
+	public class NewEucleanDistance : AbstractDistanceFunction
+	{
+		public NewEucleanDistance(float[] data, int slidingWindow)
+			: base (data, slidingWindow)
+		{
+			
+		}
+	}
 }
 
