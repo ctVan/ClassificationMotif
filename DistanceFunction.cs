@@ -108,12 +108,72 @@ namespace FindingMotifDiscord
 		}*/
 	}
 
-	public class NewEucleanDistance : AbstractDistanceFunction
+	public class EucleanDistanceArray : AbstractDistanceFunction
 	{
-		public NewEucleanDistance(float[] data, int slidingWindow)
+		private float[] preComputedDistance;
+
+		public EucleanDistanceArray(float[] data, int slidingWindow)
 			: base (data, slidingWindow)
 		{
-			
+			// initialize preComputed array
+			// by calculating array size
+			int temp = data.Length - 2 * slidingWindow;
+			int arraySize = (temp + 1) * (temp + 2) / 2;
+			preComputedDistance = new float[arraySize];
+
+			// compute some distances beforehand
+			for (int t2Loc = slidingWindow; t2Loc < data.Length - slidingWindow; t2Loc++)
+				preComputedDistance [indexOf (0, t2Loc)] = directDistance (0, t2Loc);
+		}
+
+		public override float distance(int t1Loc, int t2Loc)
+		{
+			float dist = 0f;
+			if (t1Loc == 0) // already computed
+				dist = preComputedDistance [indexOf (0, t2Loc)];
+			else {
+				if (t1Loc >= t2Loc) // already computed
+					dist = preComputedDistance [indexOf (t2Loc, t1Loc)];
+				else { // have to compute the distance by using dynamic programming
+					float firstPosDist = data[t1Loc - 1] - data[t2Loc - 1];
+					float lastPosDist = data [t1Loc + slidingWindow - 1] - data [t2Loc + slidingWindow - 1];
+					dist = preComputedDistance [indexOf (t1Loc - 1, t2Loc - 1)]
+					- firstPosDist * firstPosDist
+					+ lastPosDist * lastPosDist;
+
+					int index = indexOf (t1Loc, t2Loc);
+					preComputedDistance [index] = dist;
+				}
+			}
+
+			return (float)Math.Sqrt ((double)dist);
+		}
+
+		// return index in preComputedDistance array
+		// between t1Loc and t2Loc
+		private int indexOf(int t1Loc, int t2Loc)
+		{
+			if (t1Loc == 0)
+				return t2Loc - slidingWindow;
+			else {
+				int firstNum = data.Length - 2 * slidingWindow + 1;
+				int d = -1;
+				int n = t1Loc;
+				int Sn = n * (2 * firstNum + (n - 1) * d) / 2;
+				return Sn + t2Loc - slidingWindow;
+			}
+		}
+
+		// return distance between t1Loc and t2Loc
+		// by directly calculate it
+		private float directDistance(int t1Loc, int t2Loc)
+		{
+			float dist = 0f;
+			for (int i = 0; i < slidingWindow; i++) {
+				float diff = data [t1Loc + i] - data [t2Loc + i];
+				dist += diff * diff;
+			}
+			return dist;
 		}
 	}
 }
