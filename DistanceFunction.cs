@@ -156,11 +156,9 @@ namespace FindingMotifDiscord
 			if (t1Loc == 0)
 				return t2Loc - slidingWindow;
 			else {
-				int firstNum = data.Length - 2 * slidingWindow + 1;
-				int d = -1;
-				int n = t1Loc;
-				int Sn = n * (2 * firstNum + (n - 1) * d) / 2;
-				return Sn + t2Loc - slidingWindow;
+				int t = 2 * (data.Length - 2 * slidingWindow + 1);
+				int index = t1Loc * (t - t1Loc + 1) / 2 + t2Loc - t1Loc - slidingWindow;
+				return index;
 			}
 		}
 
