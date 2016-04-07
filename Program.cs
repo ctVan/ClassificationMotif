@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 
 namespace FindingMotifDiscord
@@ -44,7 +44,7 @@ namespace FindingMotifDiscord
 
         }
 
-        public static void motifFinding(float[] data)
+        public static void motifFindind(float[] data)
         {
             // passing data to motif finder
             const int slidingWindow = 5;
@@ -69,17 +69,36 @@ namespace FindingMotifDiscord
             System.Console.WriteLine("Time to find motif : " + watch.ElapsedMilliseconds.ToString());
         }
         
-        public static void discordFinding(float [] data)
+        public static void discordFinding_dp(float [] data)
         {
             // passing data to motif finder
             const int slidingWindow = 5;
-            AbstractDiscordFinder motifFinder = new DiscordFinder(data, slidingWindow);
+            AbstractDiscordFinder discordFinder = new DiscordFinder(data, slidingWindow,false);
             int discordLoc;
             float largestDis;
 
             var watch = System.Diagnostics.Stopwatch.StartNew();
-            System.Console.WriteLine("\nBegin finding discord ...");
-            motifFinder.findDiscord(out discordLoc, out largestDis);
+            System.Console.WriteLine("\nBegin finding discord by dynamic programming ...");
+            discordFinder.findDiscord(out discordLoc, out largestDis);
+            System.Console.WriteLine("Discord finding finish");
+            watch.Stop();
+
+            System.Console.WriteLine("\nFound discord at location: " + discordLoc.ToString());
+            System.Console.WriteLine("Largest distance: " + largestDis.ToString());
+
+            System.Console.WriteLine("Time to find discord : " + watch.ElapsedMilliseconds.ToString());
+        }
+        public static void discordFinding_bf(float[] data)
+        {
+            // passing data to motif finder
+            const int slidingWindow = 5;
+            AbstractDiscordFinder discordFinder = new DiscordFinder(data, slidingWindow,true);      // true means using brute force algorithm
+            int discordLoc;
+            float largestDis;
+
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+            System.Console.WriteLine("\nBegin finding discord by brute force ...");
+            discordFinder.findDiscord(out discordLoc, out largestDis);
             System.Console.WriteLine("Discord finding finish");
             watch.Stop();
 
@@ -100,7 +119,8 @@ namespace FindingMotifDiscord
 
  //           motifFinding(data);
 
-            discordFinding(data);
+            discordFinding_dp(data);
+            discordFinding_bf(data);
             System.Console.ReadKey();
 		}
 	}

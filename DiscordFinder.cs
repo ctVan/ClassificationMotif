@@ -21,27 +21,31 @@ namespace FindingMotifDiscord
 
     public class DiscordFinder : AbstractDiscordFinder
     {
-        public DiscordFinder(float[] data, int slidingWindow)
+        public DiscordFinder(float[] data, int slidingWindow,bool bf)
             : base(data, slidingWindow)
         {
-            distFunc = new ImprovedEucleanDistance(data, slidingWindow);
+            if(bf == true)
+                distFunc = new EucleanDistance(data, slidingWindow);
+            else 
+                distFunc = new EucleanDistanceArray(data, slidingWindow);
         }
 
         public override void findDiscord(out int discordLoc, out float largestDistance)
         {
             discordLoc = -1;
             largestDistance = 0;
-            float nearest_nei_dis = float.MaxValue;
+            float nearest_nei_dis;
 
             for (int i = 0; i < data.Length - slidingWindow; i++)
             {
+                nearest_nei_dis = float.MaxValue;
                 for (int j = 0; j < data.Length - slidingWindow; j++)
                 {
                     if (Math.Abs(i - j) >= slidingWindow)
                     {
                         if (distFunc.distance(i, j) < nearest_nei_dis)
                         {
-                            nearest_nei_dis = distFunc.distance(i, j);
+                            nearest_nei_dis = distFunc.distance(i, j);                            
                         }
                     }
                 }
@@ -51,7 +55,7 @@ namespace FindingMotifDiscord
                     discordLoc = i;
                 }
             }
-        }
+        }              
     }
 }
 
