@@ -26,7 +26,7 @@ namespace FindingMotifDiscord
 		public MotifFinder (float[] data, int slidingWindow, float R)
 			: base (data, slidingWindow, R)
 		{
-			distFunc = new ImprovedEucleanDistance (data, slidingWindow);
+			distFunc = new EucleanDistanceArray (data, slidingWindow);
 		}
 
 		public override void findMotif(out int motifLoc, out int[] motifMatches)
