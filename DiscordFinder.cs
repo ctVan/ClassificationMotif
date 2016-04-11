@@ -9,11 +9,11 @@ namespace FindingMotifDiscord
         protected float[] data;
         protected AbstractDistanceFunction distFunc;
 
-        public AbstractDiscordFinder(float[] data, int slidingWindow)
+        public AbstractDiscordFinder(float[] data, int slidingWindow, AbstractDistanceFunction disFunc)
         {
             this.data = data;
             this.slidingWindow = slidingWindow;
-            distFunc = null;
+            distFunc = disFunc;
         }
 
         public abstract void findDiscord(out int discordLoc, out float largestDistance);
@@ -21,13 +21,9 @@ namespace FindingMotifDiscord
 
     public class DiscordFinder : AbstractDiscordFinder
     {
-        public DiscordFinder(float[] data, int slidingWindow,bool bf)
-            : base(data, slidingWindow)
+        public DiscordFinder(float[] data, int slidingWindow, AbstractDistanceFunction disFunc)
+            : base(data, slidingWindow,disFunc)
         {
-            if(bf == true)
-                distFunc = new EucleanDistance(data, slidingWindow);
-            else 
-                distFunc = new EucleanDistanceArray(data, slidingWindow);
         }
 
         public override void findDiscord(out int discordLoc, out float largestDistance)
@@ -55,6 +51,7 @@ namespace FindingMotifDiscord
                     discordLoc = i;
                 }
             }
+            System.Console.WriteLine("a");
         }              
     }
 }

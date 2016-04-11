@@ -6,11 +6,12 @@ namespace FindingMotifDiscord
 	class MainClass
 	{
         // this file path uses in debug mode
-        static string discordFolder = "..\\..\\data\\discord";
-        static string motifFolder = "..\\..\\data\\motif";
-        static string getDiscordFileName()
+        static char s = Path.DirectorySeparatorChar;
+        static string discordFolder = ".." + s + ".." + s + "data" + s + "discord";
+        static string motifFolder = ".." + s + ".." + s + "data" + s + "motif";
+        static string getDiscordFileName(string folderName)
         {
-            string[] fileNames = Directory.GetFiles(discordFolder);
+            string[] fileNames = Directory.GetFiles(folderName);
             int i = 1;
             
             foreach (string name in fileNames)
@@ -49,7 +50,8 @@ namespace FindingMotifDiscord
             // passing data to motif finder
             const int slidingWindow = 5;
             const float R = 0.01f;
-            AbstractMotifFinder motifFinder = new MotifFinder(data, slidingWindow, R);
+            // need to be changed in motif finder
+            AbstractMotifFinder motifFinder = new MotifFinder(data, slidingWindow, R, new EucleanDistance(data,slidingWindow));
             int motifLoc;
             int[] motifMatches;
 
@@ -65,15 +67,15 @@ namespace FindingMotifDiscord
             {
                 System.Console.WriteLine(motif.ToString());
             }
-
+            
             System.Console.WriteLine("Time to find motif : " + watch.ElapsedMilliseconds.ToString());
         }
         
         public static void discordFinding_dp(float [] data)
         {
             // passing data to motif finder
-            const int slidingWindow = 5;
-            AbstractDiscordFinder discordFinder = new DiscordFinder(data, slidingWindow,false);
+            const int slidingWindow = 100;
+            AbstractDiscordFinder discordFinder = new DiscordFinder(data, slidingWindow, new ImprovedEucleanDistance(data, slidingWindow));
             int discordLoc;
             float largestDis;
 
@@ -91,8 +93,9 @@ namespace FindingMotifDiscord
         public static void discordFinding_bf(float[] data)
         {
             // passing data to motif finder
-            const int slidingWindow = 5;
-            AbstractDiscordFinder discordFinder = new DiscordFinder(data, slidingWindow,true);      // true means using brute force algorithm
+            const int slidingWindow = 100;
+
+            AbstractDiscordFinder discordFinder = new DiscordFinder(data, slidingWindow, new EucleanDistance(data, slidingWindow));      // true means using brute force algorithm
             int discordLoc;
             float largestDis;
 
@@ -109,18 +112,27 @@ namespace FindingMotifDiscord
         }
         public static void Main (string[] args)
 		{
-            
+            string ch;
+            System.Console.WriteLine("Motif or Discord (M/D): ");
+            ch = System.Console.ReadLine();
+
             // reading data
-            IDataLoader dataLoader = new DataLoader ();
-			string fileName;
-            fileName = getDiscordFileName();
+            IDataLoader dataLoader = new DataLoader();
+            string fileName;
+            if (ch.Equals('m') || ch.Equals('M')) {
+                fileName = getDiscordFileName(motifFolder);
+            }
+            else {                              
+                fileName = getDiscordFileName(discordFolder);
+               
+            }
+           
 
             float[] data = dataLoader.readFile (fileName);
 
- //           motifFinding(data);
-
             discordFinding_dp(data);
             discordFinding_bf(data);
+
             System.Console.ReadKey();
 		}
 	}
