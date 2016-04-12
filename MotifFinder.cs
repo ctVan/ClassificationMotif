@@ -3,17 +3,30 @@ using System.Collections.Generic;
 
 namespace FindingMotifDiscord
 {
-	public class MotifFinder
+	public abstract class AbstractMotifFinder
 	{
-		private const int slidingWindow = 5;
-		private const float R = 0.1f;
-		AbstractDistanceFunction distFunc;
-		private float[] data;
+		protected int slidingWindow;
+		protected float R;
+		protected float[] data;
+		protected AbstractDistanceFunction distFunc;
 
-		public MotifFinder (float[] data)
+		public AbstractMotifFinder(float[] data, int slidingWindow, float R, AbstractDistanceFunction distFunc)
 		{
 			this.data = data;
-			distFunc = new ImprovedEucleanDistance (data, slidingWindow);
+			this.slidingWindow = slidingWindow;
+			this.R = R;
+			distFunc = distFunc;
+		}
+
+		public abstract void findMotif(out int motifLoc, out int[] motifMatches);
+	}
+
+	public class MotifFinder : AbstractMotifFinder
+	{
+		public MotifFinder (float[] data, int slidingWindow, float R, AbstractDistanceFunction distFunc)
+			: base (data, slidingWindow, R, distFunc)
+		{
+			
 		}
 
 		public void findMotif(out int motifLoc, out int[] motifMatches)
