@@ -10,12 +10,12 @@ namespace FindingMotifDiscord
 		protected float[] data;
 		protected AbstractDistanceFunction distFunc;
 
-		public AbstractMotifFinder(float[] data, int slidingWindow, float R)
+		public AbstractMotifFinder(float[] data, int slidingWindow, float R, AbstractDistanceFunction distFunc)
 		{
 			this.data = data;
 			this.slidingWindow = slidingWindow;
 			this.R = R;
-			distFunc = null;
+			distFunc = distFunc;
 		}
 
 		public abstract void findMotif(out int motifLoc, out int[] motifMatches);
@@ -23,13 +23,13 @@ namespace FindingMotifDiscord
 
 	public class MotifFinder : AbstractMotifFinder
 	{
-		public MotifFinder (float[] data, int slidingWindow, float R)
-			: base (data, slidingWindow, R)
+		public MotifFinder (float[] data, int slidingWindow, float R, AbstractDistanceFunction distFunc)
+			: base (data, slidingWindow, R, distFunc)
 		{
-			distFunc = new EucleanDistanceArray (data, slidingWindow);
+			
 		}
 
-		public override void findMotif(out int motifLoc, out int[] motifMatches)
+		public void findMotif(out int motifLoc, out int[] motifMatches)
 		{
 			int bestMotifCnt = -1;
 			motifLoc = -1;
