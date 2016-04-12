@@ -15,7 +15,7 @@ namespace FindingMotifDiscord
 			this.data = data;
 			this.slidingWindow = slidingWindow;
 			this.R = R;
-			distFunc = distFunc;
+			this.distFunc = distFunc;
 		}
 
 		public abstract void findMotif(out int motifLoc, out int[] motifMatches);
@@ -29,7 +29,7 @@ namespace FindingMotifDiscord
 			
 		}
 
-		public void findMotif(out int motifLoc, out int[] motifMatches)
+		public override void findMotif(out int motifLoc, out int[] motifMatches)
 		{
 			int bestMotifCnt = -1;
 			motifLoc = -1;
