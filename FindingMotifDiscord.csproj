@@ -31,6 +31,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <Reference Include="Florence">
+      <HintPath>lib\Florence.dll</HintPath>
+    </Reference>
+    <Reference Include="Florence.GtkSharp">
+      <HintPath>lib\Florence.GtkSharp.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DiscordFinder.cs" />
@@ -41,4 +49,8 @@
     <Compile Include="DataLoader.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <None Include="lib\Florence.GtkSharp.dll" />
+    <None Include="lib\Florence.dll" />
+  </ItemGroup>
 </Project>
