@@ -51,6 +51,7 @@
     <Compile Include="DataLoader.cs" />
     <Compile Include="GraphWindow.cs" />
     <Compile Include="SingleGraphWindow.cs" />
+    <Compile Include="ComparisonGraphWindow.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
