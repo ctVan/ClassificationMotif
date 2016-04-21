@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using Gtk;
 
 namespace FindingMotifDiscord
 {
@@ -110,6 +111,7 @@ namespace FindingMotifDiscord
 
             System.Console.WriteLine("Time to find discord : " + watch.ElapsedMilliseconds.ToString());
         }
+
         public static void Main (string[] args)
 		{
             string ch;
@@ -130,10 +132,12 @@ namespace FindingMotifDiscord
 
             float[] data = dataLoader.readFile (fileName);
 
-            discordFinding_dp(data);
-            discordFinding_bf(data);
+            //discordFinding_dp(data);
+            //discordFinding_bf(data);
 
-            System.Console.ReadKey();
+			Gtk.Application.Init ();
+			new GraphWindow (data, 100, new int[] {1, 2, 3});
+			Gtk.Application.Run ();
 		}
 	}
 }

@@ -39,6 +39,8 @@
     <Reference Include="Florence.GtkSharp">
       <HintPath>lib\Florence.GtkSharp.dll</HintPath>
     </Reference>
+    <Reference Include="atk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <Reference Include="glib-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DiscordFinder.cs" />
@@ -47,6 +49,8 @@
     <Compile Include="DistanceFunction.cs" />
     <Compile Include="MotifFinder.cs" />
     <Compile Include="DataLoader.cs" />
+    <Compile Include="GraphWindow.cs" />
+    <Compile Include="SingleGraphWindow.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
