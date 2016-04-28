@@ -46,6 +46,7 @@ namespace FindingMotifDiscord
 
 			SetUpUi ();
 			displayGraph ();
+			DeleteEvent += new DeleteEventHandler (OnDeleteEvent);
 
 			ShowAll ();
 		}
@@ -58,6 +59,12 @@ namespace FindingMotifDiscord
 
 			SetSizeRequest (632, 520);
 			Add (plotWidget);
+		}
+
+		private void OnDeleteEvent (object o, DeleteEventArgs e)
+		{
+			HideAll ();
+			e.RetVal = true;
 		}
 
 		private void displayGraph()
