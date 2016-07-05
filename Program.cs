@@ -50,8 +50,8 @@ namespace FindingMotifDiscord
         public static void motifFindind(float[] data)
         {
             // passing data to motif finder
-            const int slidingWindow = 5;
-            const float R = 0.01f;
+            const int slidingWindow = 128;
+            const float R = 105f;
             // need to be changed in motif finder
             AbstractMotifFinder motifFinder = new MotifFinder(data, slidingWindow, R, new EucleanDistanceArray(data,slidingWindow));
             int motifLoc;
@@ -96,7 +96,7 @@ namespace FindingMotifDiscord
         public static void discordFinding_bf(float[] data)
         {
             // passing data to motif finder
-            const int slidingWindow = 100;
+            const int slidingWindow = 128;
 
             AbstractDiscordFinder discordFinder = new DiscordFinder(data, slidingWindow, new EucleanDistance(data, slidingWindow));      // true means using brute force algorithm
             int discordLoc;
@@ -119,7 +119,7 @@ namespace FindingMotifDiscord
 		public static void testMKAlgorithm(float[] data)
 		{
 			// passing data to motif finder
-			const int slidingWindow = 5;
+			const int slidingWindow = 128;
 			const float R = 0.01f;
 			// need to be changed in motif finder
 			AbstractMotifFinder motifFinder = new MKAlgorithm(data, slidingWindow, R /* not use */);
@@ -159,6 +159,10 @@ namespace FindingMotifDiscord
             }
 			
             float[] data = dataLoader.readFile (fileName);
+
+			//AbstractDistanceFunction func = new EucleanDistance (data, 128);
+			//Console.WriteLine (func.distance (19196, 19868));
+			//return;
 
             //discordFinding_dp(data);
             //discordFinding_bf(data);

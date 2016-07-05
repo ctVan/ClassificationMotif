@@ -93,26 +93,33 @@ namespace FindingMotifDiscord
 			int refLocation = 0;
 
 			// Pre calculate the distance between time series subsequences and the reference point
-			List<Distance> distances = new List<Distance> ();
+			//List<Distance> distances = new List<Distance> ();
+			Distance[] distances = new Distance[m];
 			for (int i = 1; i < m; ++i) {
 				Distance dist;
 				dist.distance = distFunc.distance (refLocation, i);
 				dist.location = i;
 
 				// add to the distances
-				distances.Add(dist);
+				distances[i - 1] = dist;
 
 				// if the calculated distance is less than best so far
-				if (dist.distance < bestSoFar) {
-					// update bestSoFar
-					bestSoFar = dist.distance;
-					motifLocation1 = refLocation;
-					motifLocation2[0] = i;
+				if (i >= slidingWindow) {
+					if (dist.distance < bestSoFar)
+					{
+						// update bestSoFar
+						bestSoFar = dist.distance;
+						motifLocation1 = refLocation;
+						motifLocation2[0] = i;
+					}
 				}
 			}
 
 			// Sort the distances ascending
-			distances.Sort ((x, y) => x.distance.CompareTo (y.distance));
+			//distances.Sort ((x, y) => x.distance.CompareTo (y.distance));
+			Array.Sort(distances, delegate (Distance x, Distance y) {
+				return x.distance.CompareTo(y.distance);
+			});
 
 			// Begin finding motif pair
 			int offset = 0;
@@ -129,7 +136,7 @@ namespace FindingMotifDiscord
 						continue;
 
 					// if not, calculate the distance between them
-					if (d1.distance - d2.distance < bestSoFar) {
+					if (d2.distance - d1.distance < bestSoFar) {
 						abandon = false;
 						double d = distFunc.distance (d1.location, d2.location);
 
