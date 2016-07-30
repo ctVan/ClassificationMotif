@@ -14,8 +14,6 @@ namespace FindingMotifDiscord
 		}
 
 		public abstract float distance(int t1Loc, int t2Loc);
-
-		//public virtual void printMatrix() {}
 	}
 
 	public class EucleanDistance : AbstractDistanceFunction
@@ -59,7 +57,7 @@ namespace FindingMotifDiscord
 
 		}
 
-		// calculate distance without dynamic quy hoach
+		// calculate distance without dynamic programming
 		private float __distance(int t1Loc, int t2Loc)
 		{
 			float dist = 0;
@@ -70,7 +68,7 @@ namespace FindingMotifDiscord
 			return dist;
 		}
 
-		// calculate distance with dynamic quy hoach
+		// calculate distance with dynamic programming
 		public override float distance(int t1Loc, int t2Loc)
 		{
 			float dist = 0;
@@ -92,20 +90,6 @@ namespace FindingMotifDiscord
 			}
 			return (float)Math.Sqrt ((double)dist);
 		}
-
-		/*
-		public override void printMatrix()
-		{
-			foreach (float[] row in preComputedDistance) {
-				foreach (float col in row) {
-					if (col != 0)
-						System.Console.Write ("X ");
-					else
-						System.Console.Write (col.ToString () + " ");
-				}
-				System.Console.WriteLine ();
-			}
-		}*/
 	}
 
 	public class EucleanDistanceArray : AbstractDistanceFunction
