@@ -10,6 +10,9 @@ namespace FindingMotifDiscord
         static string discordFolder = ".." + s + ".." + s + "data" + s + "discord";
         static string motifFolder = ".." + s + ".." + s + "data" + s + "motif";
 
+		// class to run motif/discord finder algorithm
+		static private Running running;
+
         static string getDiscordFileName(string folderName)
         {
             string[] fileNames = Directory.GetFiles(folderName);
@@ -28,13 +31,13 @@ namespace FindingMotifDiscord
             return fileNames[Int32.Parse(idx) - 1];
         }
 
-        static string getMotifFileName()
+        static string getMotifFileName(string folderName)
         {
-            string[] fileNames = Directory.GetFiles(motifFolder);
+            string[] fileNames = Directory.GetFiles(folderName);
             int i = 1;
             foreach (string name in fileNames)
             {
-                string n = name.Replace(discordFolder + "\\", "");
+                string n = name.Replace(motifFolder + "\\", "");
                 System.Console.Write(i.ToString()+". ");
                 System.Console.WriteLine(n);
                 i++;
@@ -44,7 +47,6 @@ namespace FindingMotifDiscord
 
 
             return fileNames[Int32.Parse(idx) - 1];
-
         }
 
         public static void motifFindind(float[] data)
@@ -114,60 +116,33 @@ namespace FindingMotifDiscord
             System.Console.WriteLine("Time to find discord : " + watch.ElapsedMilliseconds.ToString());
         }
 
-		// just for testing purpose
-		// testing MKAlgorithm
-		public static void testMKAlgorithm(float[] data)
-		{
-			// passing data to motif finder
-			const int slidingWindow = 128;
-			const float R = 0.01f;
-			// need to be changed in motif finder
-			AbstractMotifFinder motifFinder = new MKAlgorithm(data, slidingWindow, R /* not use */);
-			int motifLoc;
-			int[] motifMatches;
-
-			var watch = System.Diagnostics.Stopwatch.StartNew();
-			System.Console.WriteLine("\nBegin finding motif MK Algorithm ...");
-			motifFinder.findMotif(out motifLoc, out motifMatches);
-			System.Console.WriteLine("Motif finding finish");
-			watch.Stop();
-
-			System.Console.WriteLine("\nFound motif at location: " + motifLoc.ToString());
-			System.Console.WriteLine("Motif matches : ");
-			foreach (int motif in motifMatches)
-			{
-				System.Console.WriteLine(motif.ToString());
-			}
-
-			System.Console.WriteLine("Time to find motif : " + watch.ElapsedMilliseconds.ToString());
-		}
-
         public static void Main (string[] args)
 		{
+			// init running class
+			running = new Running ();
+			running.setTimeProfiling (true);
+
+			// prompt user to choose between algorithms
             string ch;
-            System.Console.WriteLine("Motif or Discord (M/D): ");
+            System.Console.Write("Motif or Discord (M/D): ");
             ch = System.Console.ReadLine();
 
-            // reading data
-            IDataLoader dataLoader = new DataLoader();
+            // get data file name
             string fileName;
-            if (ch.Equals('m') || ch.Equals('M')) {
-                fileName = getDiscordFileName(motifFolder);
-            }
-            else {                              
+            if (ch.Equals("m") || ch.Equals("M"))
+                fileName = getMotifFileName(motifFolder);
+            else                           
                 fileName = getDiscordFileName(discordFolder);
-            }
-			
+
+			// load the data
+			IDataLoader dataLoader = new DataLoader();
             float[] data = dataLoader.readFile (fileName);
 
-			//AbstractDistanceFunction func = new EucleanDistance (data, 128);
-			//Console.WriteLine (func.distance (19196, 19868));
-			//return;
-
-            //discordFinding_dp(data);
-            //discordFinding_bf(data);
-			motifFindind (data);
-			testMKAlgorithm (data);
+			// Testing MK algorithm
+			const int slidingWindow = 128;
+			const float R = 0.01f;
+			AbstractMotifFinder mkAlgorithm = new MKAlgorithm(data, slidingWindow, R /* not use */);
+			running.runMotifFinder (mkAlgorithm);
 
             System.Console.ReadKey();
 		}

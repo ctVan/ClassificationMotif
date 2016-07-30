@@ -18,7 +18,7 @@ namespace FindingMotifDiscord
 
 		public void runMotifFinder(AbstractMotifFinder finder)
 		{
-			int mofitLoc;
+			int motifLoc;
 			int[] motifMatches;
 
 			System.Diagnostics.Stopwatch watch = null;
