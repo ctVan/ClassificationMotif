@@ -1,4 +1,5 @@
 using System;
+using Gtk;
 
 namespace GraphTool
 {
@@ -7,6 +8,12 @@ namespace GraphTool
 		public static void Main (string[] args)
 		{
 			Console.WriteLine ("Hello World!");
+
+			// init graph window
+			// and show it
+			Gtk.Application.Init ();
+			new GraphWindow ();
+			Gtk.Application.Run ();
 		}
 	}
 }
