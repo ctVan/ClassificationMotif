@@ -5,7 +5,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FindingMotifDiscord", "Find
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{133CCA98-B72C-4AAA-B3C8-65BF9EBE9AAE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WidgetsLibrary", "WidgetsLibrary\WidgetsLibrary.csproj", "{D6BEF0BA-2051-4495-9EAE-E0407CF087FE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WidgetsLibrary", "Libraries\WidgetsLibrary\WidgetsLibrary.csproj", "{D6BEF0BA-2051-4495-9EAE-E0407CF087FE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{7DBA2265-A99F-4263-BDE4-9FD0C7331628}"
 EndProject
