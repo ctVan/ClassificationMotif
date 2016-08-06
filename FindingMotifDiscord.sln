@@ -7,6 +7,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{3ABFCBCC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphTool", "GraphTool\GraphTool.csproj", "{271A1512-22A2-44FB-A036-7F961EBBB8E6}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{507CD5A1-AB28-4A57-B94E-560C9FDB124C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testing", "Testing", "{AD14C502-5E44-4E79-8CC2-7008C214C253}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RunClass", "Testing\RunClass\RunClass.csproj", "{336F08AE-D1A2-4E9A-A08F-442253637C55}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -17,6 +23,10 @@ Global
 		{271A1512-22A2-44FB-A036-7F961EBBB8E6}.Debug|x86.Build.0 = Debug|x86
 		{271A1512-22A2-44FB-A036-7F961EBBB8E6}.Release|x86.ActiveCfg = Release|x86
 		{271A1512-22A2-44FB-A036-7F961EBBB8E6}.Release|x86.Build.0 = Release|x86
+		{336F08AE-D1A2-4E9A-A08F-442253637C55}.Debug|x86.ActiveCfg = Debug|x86
+		{336F08AE-D1A2-4E9A-A08F-442253637C55}.Debug|x86.Build.0 = Debug|x86
+		{336F08AE-D1A2-4E9A-A08F-442253637C55}.Release|x86.ActiveCfg = Release|x86
+		{336F08AE-D1A2-4E9A-A08F-442253637C55}.Release|x86.Build.0 = Release|x86
 		{FD27EECF-6BBD-474E-8F26-C7F6C330C4F2}.Debug|x86.ActiveCfg = Debug|x86
 		{FD27EECF-6BBD-474E-8F26-C7F6C330C4F2}.Debug|x86.Build.0 = Debug|x86
 		{FD27EECF-6BBD-474E-8F26-C7F6C330C4F2}.Release|x86.ActiveCfg = Release|x86
@@ -24,6 +34,7 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{271A1512-22A2-44FB-A036-7F961EBBB8E6} = {3ABFCBCC-1058-4269-95BC-4C58F5889A92}
+		{336F08AE-D1A2-4E9A-A08F-442253637C55} = {AD14C502-5E44-4E79-8CC2-7008C214C253}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = FindingMotifDiscord.csproj
