@@ -123,26 +123,28 @@ namespace FindingMotifDiscord
 			running.setTimeProfiling (true);
 
 			// prompt user to choose between algorithms
-            string ch;
-            System.Console.Write("Motif or Discord (M/D): ");
-            ch = System.Console.ReadLine();
+			string ch;
+			System.Console.Write ("Motif or Discord (M/D): ");
+			ch = System.Console.ReadLine ();
 
-            // get data file name
-            string fileName;
-            if (ch.Equals("m") || ch.Equals("M"))
-                fileName = getMotifFileName(motifFolder);
-            else                           
-                fileName = getDiscordFileName(discordFolder);
+			// get data file name
+			string fileName;
+			if (ch.Equals ("m") || ch.Equals ("M"))
+				fileName = getMotifFileName (motifFolder);
+			else                           
+				fileName = getDiscordFileName (discordFolder);
 
 			// load the data
-			IDataLoader dataLoader = new DataLoader();
-            float[] data = dataLoader.readFile (fileName);
+			IDataLoader dataLoader = new DataLoader ();
+			float[] data = dataLoader.readFile (fileName);
 
 			// Testing MK algorithm
-			const int slidingWindow = 128;
-			const float R = 0.01f;
-			AbstractMotifFinder mkAlgorithm = new MKAlgorithm(data, slidingWindow, R /* not use */);
-			running.runMotifFinder (mkAlgorithm);
+			const int slidingWindow = 9;
+			const float R = 0.1f;
+			AbstractMotifFinder algorithm;
+			//AbstractMotifFinder algorithm = new MKAlgorithm(data, slidingWindow, R /* not use */);
+			algorithm = new MotifFinder(data, slidingWindow, R, new EucleanDistanceArray(data,slidingWindow));
+			running.runMotifFinder (algorithm);
 
             System.Console.ReadKey();
 		}

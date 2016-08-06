@@ -14,6 +14,8 @@ namespace FindingMotifDiscord
 
 	public class AverageSlidingWindow : FindingSlidingWindow
 	{
+		const int segmentsPerSlidingWindow = 3;
+
 		public AverageSlidingWindow()
 		{
 
@@ -24,8 +26,27 @@ namespace FindingMotifDiscord
 			// find important extreme points
 			List<int> extremePoints = findImportantExtremePoint (data);
 
-			// forecast the sliding window base on averaging
-			return data.Length / extremePoints.Count;
+			// calculate the total length of segmentPerSlidingWindow in the time series
+			int totalLength = 0;
+			int prevExtremePointLoc = 0;
+			for (int i = 0; i < extremePoints.Count; ++i) {
+				int times = 0;
+				if (i < segmentsPerSlidingWindow)
+					times = (i + 1);
+				else if (i <= extremePoints.Count - segmentsPerSlidingWindow)
+					times = segmentsPerSlidingWindow;
+				else
+					times = (extremePoints.Count - i);
+
+				totalLength += times * (extremePoints[i] - prevExtremePointLoc);
+				prevExtremePointLoc = extremePoints [i];
+			}
+
+			// number of sub time series if we have segmentPerSlidingWindow
+			int numOfSubTimeSeries = extremePoints.Count - segmentsPerSlidingWindow;
+
+			// calculate the sliding window based on averaging
+			return totalLength / numOfSubTimeSeries;
 		}
 
 		private List<int> findImportantExtremePoint(float[] data)
