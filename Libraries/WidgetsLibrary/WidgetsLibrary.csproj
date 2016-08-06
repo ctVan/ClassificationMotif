@@ -55,6 +55,8 @@
     <Compile Include="gtk-gui\generated.cs" />
     <Compile Include="TestWidget.cs" />
     <Compile Include="gtk-gui\WidgetsLibrary.TestWidget.cs" />
+    <Compile Include="gtk-gui\WidgetsLibrary.HorizontalWidgetsList.cs" />
+    <Compile Include="HorizontalWidgetsList.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

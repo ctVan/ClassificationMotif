@@ -45,7 +45,4 @@
     <Compile Include="FindingSlidingWindow.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <ItemGroup>
-    <Folder Include="tools\" />
-  </ItemGroup>
 </Project>

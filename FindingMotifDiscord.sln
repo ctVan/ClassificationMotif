@@ -35,6 +35,6 @@ Global
 		{271A1512-22A2-44FB-A036-7F961EBBB8E6} = {7DBA2265-A99F-4263-BDE4-9FD0C7331628}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = FindingMotifDiscord.csproj
+		StartupItem = Tools\GraphTool\GraphTool.csproj
 	EndGlobalSection
 EndGlobal

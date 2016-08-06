@@ -2,10 +2,11 @@
 <stetic-interface>
   <configuration>
     <images-root-path>..</images-root-path>
-    <target-gtk-version>3.0</target-gtk-version>
+    <target-gtk-version>2.12</target-gtk-version>
   </configuration>
   <import>
     <widget-library name="../libs/Florence.GtkSharp.dll" />
+    <widget-library name="../../../Libraries/WidgetsLibrary/bin/Debug/WidgetsLibrary.dll" />
     <widget-library name="../bin/Debug/GraphTool.exe" internal="true" />
   </import>
   <widget class="Gtk.Window" id="GraphTool.GraphWindow" design-size="831 556">
@@ -34,7 +35,14 @@
               </packing>
             </child>
             <child>
-              <placeholder />
+              <widget class="WidgetsLibrary.HorizontalWidgetsList" id="horizontalwidgetslist1">
+                <property name="MemberName" />
+                <property name="Events">ButtonPressMask</property>
+              </widget>
+              <packing>
+                <property name="Position">1</property>
+                <property name="AutoSize">True</property>
+              </packing>
             </child>
           </widget>
           <packing>
