@@ -32,6 +32,7 @@ namespace WidgetsLibrary
 				this.Child.ShowAll ();
 			}
 			this.Hide ();
+			this.widgetList.FocusChildSet += new global::Gtk.FocusChildSetHandler (this.OnWidgetListFocusChildSet);
 		}
 	}
 }

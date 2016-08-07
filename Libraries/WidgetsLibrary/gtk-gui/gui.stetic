@@ -116,6 +116,7 @@
               <widget class="Gtk.HBox" id="widgetList">
                 <property name="MemberName" />
                 <property name="Spacing">6</property>
+                <signal name="FocusChildSet" handler="OnWidgetListFocusChildSet" />
                 <child>
                   <placeholder />
                 </child>
