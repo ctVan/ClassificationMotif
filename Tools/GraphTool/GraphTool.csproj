@@ -59,6 +59,8 @@
     <Compile Include="GraphWindow.cs" />
     <Compile Include="gtk-gui\generated.cs" />
     <Compile Include="gtk-gui\GraphTool.GraphWindow.cs" />
+    <Compile Include="PlotWidgetList.cs" />
+    <Compile Include="gtk-gui\GraphTool.PlotWidgetList.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

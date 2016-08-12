@@ -44,6 +44,10 @@ namespace FindingMotifDiscord
 				System.Console.WriteLine(motif.ToString());
 			}
 
+			// output the result to file
+			OutputResult outputFile = new PlainTextFileOutput ();
+			outputFile.outputResult ("result.txt", "motif.txt", motifLoc, motifMatches);
+
 			// display the time profiling information, if neccessary
 			if (isTimeProfiling)
 				System.Console.WriteLine("Time to find motif : " + watch.ElapsedMilliseconds.ToString());

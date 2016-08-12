@@ -7,7 +7,7 @@ namespace GraphTool
 		private global::Gtk.HBox hbox2;
 		private global::Gtk.VBox vbox4;
 		private global::Florence.GtkSharp.PlotWidget timeSeriresPlot;
-		private global::WidgetsLibrary.HorizontalWidgetsList horizontalwidgetslist1;
+		private global::GraphTool.PlotWidgetList plotwidgetlist1;
 		private global::Gtk.VBox vbox3;
 		private global::Gtk.CheckButton comparisonModeCheckBox;
 		private global::Gtk.ScrolledWindow GtkScrolledWindow;
@@ -30,21 +30,21 @@ namespace GraphTool
 			this.vbox4.Name = "vbox4";
 			this.vbox4.Spacing = 6;
 			// Container child vbox4.Gtk.Box+BoxChild
-//			this.timeSeriresPlot = new global::Florence.GtkSharp.PlotWidget ();
-//			this.timeSeriresPlot.WidthRequest = 678;
-//			this.timeSeriresPlot.HeightRequest = 405;
-//			this.timeSeriresPlot.Name = "timeSeriresPlot";
-//			this.vbox4.Add (this.timeSeriresPlot);
+			this.timeSeriresPlot = new global::Florence.GtkSharp.PlotWidget ();
+			this.timeSeriresPlot.WidthRequest = 678;
+			this.timeSeriresPlot.HeightRequest = 405;
+			this.timeSeriresPlot.Name = "timeSeriresPlot";
+			this.vbox4.Add (this.timeSeriresPlot);
 			global::Gtk.Box.BoxChild w1 = ((global::Gtk.Box.BoxChild)(this.vbox4 [this.timeSeriresPlot]));
 			w1.Position = 0;
 			w1.Expand = false;
 			w1.Fill = false;
 			// Container child vbox4.Gtk.Box+BoxChild
-			this.horizontalwidgetslist1 = new global::WidgetsLibrary.HorizontalWidgetsList ();
-			this.horizontalwidgetslist1.Events = ((global::Gdk.EventMask)(256));
-			this.horizontalwidgetslist1.Name = "horizontalwidgetslist1";
-			this.vbox4.Add (this.horizontalwidgetslist1);
-			global::Gtk.Box.BoxChild w2 = ((global::Gtk.Box.BoxChild)(this.vbox4 [this.horizontalwidgetslist1]));
+			this.plotwidgetlist1 = new global::GraphTool.PlotWidgetList ();
+			this.plotwidgetlist1.Events = ((global::Gdk.EventMask)(256));
+			this.plotwidgetlist1.Name = "plotwidgetlist1";
+			this.vbox4.Add (this.plotwidgetlist1);
+			global::Gtk.Box.BoxChild w2 = ((global::Gtk.Box.BoxChild)(this.vbox4 [this.plotwidgetlist1]));
 			w2.Position = 1;
 			this.hbox2.Add (this.vbox4);
 			global::Gtk.Box.BoxChild w3 = ((global::Gtk.Box.BoxChild)(this.hbox2 [this.vbox4]));

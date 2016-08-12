@@ -43,6 +43,7 @@
     <Compile Include="DataLoader.cs" />
     <Compile Include="Running.cs" />
     <Compile Include="FindingSlidingWindow.cs" />
+    <Compile Include="OutputResult.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
