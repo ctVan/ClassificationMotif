@@ -84,4 +84,10 @@
     <None Include="libs\Florence.dll" />
     <None Include="libs\Florence.GtkSharp.dll" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Libraries\WidgetsLibrary\WidgetsLibrary.csproj">
+      <Project>{D6BEF0BA-2051-4495-9EAE-E0407CF087FE}</Project>
+      <Name>WidgetsLibrary</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>
