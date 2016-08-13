@@ -1,14 +1,16 @@
 using System;
+using Gtk;
 
-namespace GraphTool
-{
-	public partial class GraphWindow : Gtk.Window
+public partial class GraphWindow: Gtk.Window
+{	
+	public GraphWindow (): base (Gtk.WindowType.Toplevel)
 	{
-		public GraphWindow () : 
-				base(Gtk.WindowType.Toplevel)
-		{
-			this.Build ();
-		}
+		Build ();
+	}
+
+	protected void OnDeleteEvent (object sender, DeleteEventArgs a)
+	{
+		Application.Quit ();
+		a.RetVal = true;
 	}
 }
-

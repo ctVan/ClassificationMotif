@@ -7,13 +7,10 @@ namespace GraphTool
 	{
 		public static void Main (string[] args)
 		{
-			Console.WriteLine ("Hello World!");
-
-			// init graph window
-			// and show it
-			Gtk.Application.Init ();
-			new GraphWindow ();
-			Gtk.Application.Run ();
+			Application.Init ();
+			GraphWindow win = new GraphWindow ();
+			win.Show ();
+			Application.Run ();
 		}
 	}
 }
