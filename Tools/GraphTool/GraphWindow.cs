@@ -37,6 +37,7 @@ public partial class GraphWindow: Gtk.Window
 		this.widgetList1.Name = "widgetList1";
 
 		addPlotWidgetsToWidgetList (10);
+		widgetList1.widgetClicked += onWidgetListChildWidgetClicked;
 
 		this.vbox2.Add (this.widgetList1);
 		global::Gtk.Box.BoxChild w2 = ((global::Gtk.Box.BoxChild)(this.vbox2 [this.widgetList1]));
@@ -62,21 +63,27 @@ public partial class GraphWindow: Gtk.Window
 		w4.Position = 0;
 		w4.Expand = false;
 		w4.Fill = false;
-		// Container child vbox1.Gtk.Box+BoxChild
-		this.GtkScrolledWindow = new global::Gtk.ScrolledWindow ();
-		this.GtkScrolledWindow.Name = "GtkScrolledWindow";
-		this.GtkScrolledWindow.HscrollbarPolicy = ((global::Gtk.PolicyType)(2));
-		this.GtkScrolledWindow.ShadowType = ((global::Gtk.ShadowType)(1));
-		// Container child GtkScrolledWindow.Gtk.Container+ContainerChild
-		this.MotifListTextView = new global::Gtk.TextView ();
-		this.MotifListTextView.CanFocus = true;
-		this.MotifListTextView.Name = "MotifListTextView";
-		this.MotifListTextView.Editable = false;
-		this.MotifListTextView.CursorVisible = false;
-		this.GtkScrolledWindow.Add (this.MotifListTextView);
-		this.vbox1.Add (this.GtkScrolledWindow);
-		global::Gtk.Box.BoxChild w6 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.GtkScrolledWindow]));
-		w6.Position = 1;
+//		// Container child vbox1.Gtk.Box+BoxChild
+//		this.GtkScrolledWindow = new global::Gtk.ScrolledWindow ();
+//		this.GtkScrolledWindow.Name = "GtkScrolledWindow";
+//		this.GtkScrolledWindow.HscrollbarPolicy = ((global::Gtk.PolicyType)(2));
+//		this.GtkScrolledWindow.ShadowType = ((global::Gtk.ShadowType)(1));
+//		// Container child GtkScrolledWindow.Gtk.Container+ContainerChild
+//		global::Gtk.Viewport w5 = new global::Gtk.Viewport ();
+//		w5.ShadowType = ((global::Gtk.ShadowType)(0));
+//		// Container child GtkViewport1.Gtk.Container+ContainerChild
+//		this.listView = new global::MonoDevelop.Components.ListView ();
+//		this.listView.HeightRequest = 447;
+//		this.listView.Name = "listView";
+//		this.listView.AllowMultipleSelection = true;
+//		this.listView.SelectedRow = 0;
+//		this.listView.SelectionDisabled = false;
+//		this.listView.Page = 0;
+//		w5.Add (this.listView);
+//		this.GtkScrolledWindow.Add (w5);
+//		this.vbox1.Add (this.GtkScrolledWindow);
+//		global::Gtk.Box.BoxChild w6 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.GtkScrolledWindow]));
+//		w6.Position = 1;
 		// Container child vbox1.Gtk.Box+BoxChild
 		this.infoLabel = new global::Gtk.Label ();
 		this.infoLabel.Name = "infoLabel";
@@ -121,6 +128,11 @@ public partial class GraphWindow: Gtk.Window
 			// add plot widget to widgetList
 			widgetList1.addWidget((Gtk.Widget)plotWidget);
 		}
+	}
+
+	private void onWidgetListChildWidgetClicked(Gtk.Widget childWidget)
+	{
+		System.Console.WriteLine (childWidget.ToString());
 	}
 
 	private void initializeMainPlotWidget()
