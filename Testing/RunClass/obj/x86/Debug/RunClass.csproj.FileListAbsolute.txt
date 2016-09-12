@@ -1,0 +1,7 @@
+E:\Document\time_series\projects\FindingMotifDiscord\Testing\RunClass\bin\Debug\RunClass.exe
+E:\Document\time_series\projects\FindingMotifDiscord\Testing\RunClass\bin\Debug\RunClass.pdb
+E:\Document\time_series\projects\FindingMotifDiscord\Testing\RunClass\bin\Debug\FindingMotif.exe
+E:\Document\time_series\projects\FindingMotifDiscord\Testing\RunClass\bin\Debug\FindingMotif.pdb
+E:\Document\time_series\projects\FindingMotifDiscord\Testing\RunClass\obj\x86\Debug\RunClass.csprojResolveAssemblyReference.cache
+E:\Document\time_series\projects\FindingMotifDiscord\Testing\RunClass\obj\x86\Debug\RunClass.exe
+E:\Document\time_series\projects\FindingMotifDiscord\Testing\RunClass\obj\x86\Debug\RunClass.pdb

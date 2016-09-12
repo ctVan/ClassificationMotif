@@ -53,7 +53,7 @@ namespace FindingMotifDiscord
         {
             // passing data to motif finder
             const int slidingWindow = 128;
-            const float R = 105f;
+            const float R = 0.01f;
             // need to be changed in motif finder
             AbstractMotifFinder motifFinder = new MotifFinder(data, slidingWindow, R, new EucleanDistanceArray(data,slidingWindow));
             int motifLoc;
@@ -78,7 +78,7 @@ namespace FindingMotifDiscord
         public static void discordFinding_dp(float [] data)
         {
             // passing data to motif finder
-            const int slidingWindow = 100;
+            const int slidingWindow = 128;
             AbstractDiscordFinder discordFinder = new DiscordFinder(data, slidingWindow, new ImprovedEucleanDistance(data, slidingWindow));
             int discordLoc;
             float largestDis;

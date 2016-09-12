@@ -1,158 +1,236 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace FindingMotifDiscord
 {
-	public abstract class AbstractMotifFinder
-	{
-		protected int slidingWindow;
-		protected float R;
-		protected float[] data;
-		protected AbstractDistanceFunction distFunc;
+    public abstract class AbstractMotifFinder
+    {
+        protected int slidingWindow;
+        protected float R;
+        protected float[] data;
+        protected AbstractDistanceFunction distFunc;
 
-		public AbstractMotifFinder(float[] data, int slidingWindow, float R, AbstractDistanceFunction distFunc)
-		{
-			this.data = data;
-			this.slidingWindow = slidingWindow;
-			this.R = R;
-			this.distFunc = distFunc;
-		}
+        public AbstractMotifFinder(float[] data, int slidingWindow, float R, AbstractDistanceFunction distFunc)
+        {
+            this.data = data;
+            this.slidingWindow = slidingWindow;
+            this.R = R;
+            this.distFunc = distFunc;
+        }
 
-		public abstract void findMotif(out int motifLoc, out int[] motifMatches);
-	}
+        public abstract void findMotif(out int motifLoc, out int[] motifMatches);
+    }
 
-	public class MotifFinder : AbstractMotifFinder
-	{
-		public MotifFinder (float[] data, int slidingWindow, float R, AbstractDistanceFunction distFunc)
-			: base (data, slidingWindow, R, distFunc)
-		{
-			
-		}
+    public class MotifFinder : AbstractMotifFinder
+    {
+        public MotifFinder(float[] data, int slidingWindow, float R, AbstractDistanceFunction distFunc)
+            : base(data, slidingWindow, R, distFunc)
+        {
 
-		public override void findMotif(out int motifLoc, out int[] motifMatches)
-		{
-			int bestMotifCnt = -1;
-			motifLoc = -1;
-			List<int> motifMatchesList = null;
+        }
 
-			for (int i = 0; i < data.Length - slidingWindow; i++) {
-				int count = 0;
-				List<int> pointers = new List<int>();
-				for (int j = 0; j < data.Length - slidingWindow; j++) {
-					if (Math.Abs (i - j) >= slidingWindow) {
-						if (distFunc.distance (i, j) < R) {
-							count++;
-							pointers.Add (j);
-						}
-					}
-				}
+        public override void findMotif(out int motifLoc, out int[] motifMatches)
+        {
+            int bestMotifCnt = -1;
+            motifLoc = -1;
+            List<int> motifMatchesList = null;
 
-				if (count > bestMotifCnt) {
-					bestMotifCnt = count;
-					motifLoc = i;
-					motifMatchesList = pointers;
-				}
-			}
+            for (int i = 0; i < data.Length - slidingWindow; i++)
+            {
+                int count = 0;
+                List<int> pointers = new List<int>();
+                for (int j = 0; j < data.Length - slidingWindow; j++)
+                {
+                    if (Math.Abs(i - j) >= slidingWindow)
+                    {
+                        if (distFunc.distance(i, j) < R)
+                        {
+                            count++;
+                            pointers.Add(j);
+                        }
+                    }
+                }
 
-			// print matrix
-			//distFunc.printMatrix();
+                if (count > bestMotifCnt)
+                {
+                    bestMotifCnt = count;
+                    motifLoc = i;
+                    motifMatchesList = pointers;
+                }
+            }
 
-			// return
-			motifMatches = motifMatchesList.ToArray();
-		}
-	}
+            // print matrix
+            //distFunc.printMatrix();
 
-	public class MKAlgorithm : AbstractMotifFinder
-	{
-		private struct Distance
-		{
-			public int location;
-			public double distance;
-			public Distance(int location, double distance)
-			{
-				this.location = location;
-				this.distance = distance;
-			}
-		}
+            // return
+            motifMatches = motifMatchesList.ToArray();
+        }
+    }
 
-		public MKAlgorithm(float[] data, int slidingWindow, float R)
-			: base(data, slidingWindow, R, new EucleanDistance(data, slidingWindow))
-		{
+    public class MKAlgorithm : AbstractMotifFinder
+    {
+        // using for shared resources between several threads
+        private Object lockObj = new Object();
+        const int THREAD_COUNT = 4;
+        public struct Distance
+        {
+            public int location;
+            public double distance;
+            public Distance(int location, double distance)
+            {
+                this.location = location;
+                this.distance = distance;
+            }
+        }
 
-		}
+        public MKAlgorithm(float[] data, int slidingWindow, float R)
+            : base(data, slidingWindow, R, new EucleanDistance(data, slidingWindow))
+        {
 
-		public override void findMotif(out int motifLoc, out int[] motifMatches)
-		{
-			double bestSoFar = Double.MaxValue;
-			int motifLocation1 = -1;
-			int[] motifLocation2 = {-1};
+        }
+        public void calRefDistance(int begin,
+                                  int end,
+                                  int refLocation,
+                                  ref double bestSoFar,
+                                  ref int motifLoc2,
+                                  ref Distance[] distances)
+        {
+            Console.WriteLine("thread: " + Thread.CurrentThread.Name + " " + begin + " " + end);
+            for (int i = begin; i < end; i++)
+            {
 
-			// Choose a random reference point
-			// For simplicity, the reference point will be 0
-			int m = data.Length - slidingWindow + 1;
-			int refLocation = 0;
+                // if the calculated distance is less than best so far
+                if (i >= slidingWindow)
+                {
+                    Distance dist;
+                    dist.distance = distFunc.distance(refLocation, i);
+                    dist.location = i;
+                    //   Console.WriteLine("thread " + Thread.CurrentThread.Name+" loc:"+i + " " + dist.distance);
+                    // just use lock, can be updated using read write lock
+                    lock (lockObj)
+                    {
+                        // add to the distances
+                        distances[i - 1] = dist;
+                        if (dist.distance < bestSoFar)
+                        {
+                            // update bestSoFar
+                            bestSoFar = dist.distance;
+                            motifLoc2 = i;
+                        }
+                    }
+                }
+            }
+        }
+        public override void findMotif(out int motifLoc, out int[] motifMatches)
+        {
+            double bestSoFar = Double.MaxValue;
+            int motifLocation1 = -1;
+            int[] motifLocation2 = { -1 };
 
-			// Pre calculate the distance between time series subsequences and the reference point
-			//List<Distance> distances = new List<Distance> ();
-			Distance[] distances = new Distance[m];
-			for (int i = 1; i < m; ++i) {
-				Distance dist;
-				dist.distance = distFunc.distance (refLocation, i);
-				dist.location = i;
+            // Choose a random reference point
+            // For simplicity, the reference point will be 0
+            int len = data.Length;
+            int m = len - slidingWindow + 1;
+            int refLocation = 0;
 
-				// add to the distances
-				distances[i - 1] = dist;
+            // Pre calculate the distance between time series subsequences and the reference point
+            //List<Distance> distances = new List<Distance> ();
+            motifLocation1 = refLocation;
+            Distance[] distances = new Distance[m];
 
-				// if the calculated distance is less than best so far
-				if (i >= slidingWindow) {
-					if (dist.distance < bestSoFar)
-					{
-						// update bestSoFar
-						bestSoFar = dist.distance;
-						motifLocation1 = refLocation;
-						motifLocation2[0] = i;
-					}
-				}
-			}
 
-			// Sort the distances ascending
-			//distances.Sort ((x, y) => x.distance.CompareTo (y.distance));
-			Array.Sort(distances, delegate (Distance x, Distance y) {
-				return x.distance.CompareTo(y.distance);
-			});
+            // Calculate using multi-threads
+            Thread[] th = new Thread[THREAD_COUNT];
+            for (int i = 0; i < THREAD_COUNT; i++)
+            {
+                int begin, end;
+                if (i == 0)
+                    begin = 1;
+                else
+                    begin = i * len / THREAD_COUNT;
+                if (i == THREAD_COUNT - 1)
+                    end = m;
+                else
+                    end = (i + 1) * len / THREAD_COUNT - 1;
+                Console.WriteLine("cap thread: " + i + " " + begin + " " + end);
+                ThreadStart starter = () => calRefDistance(begin, end, refLocation, ref bestSoFar, ref motifLocation2[0], ref distances);
 
-			// Begin finding motif pair
-			int offset = 0;
-			bool abandon = false;
-			while (!abandon) {
-				++offset;
-				abandon = true;
-				for (int i = 0; i < m - offset - 1; ++i) {
-					Distance d1 = distances [i];
-					Distance d2 = distances [i + offset];
+                th[i] = new Thread(starter);
+                th[i].Name = i.ToString();
+                th[i].Start();
+            }
+            foreach (Thread th_ in th)
+            {
+                th_.Join();
+            }
+/*        
+            // Calculate using single thread
+            for (int i = 1; i < m; ++i)
+            {
+                Distance dist;
+                dist.distance = distFunc.distance(refLocation, i);
+                dist.location = i;
 
-					// ignore time series pair whose are in sliding window
-					if (Math.Abs(d1.location - d2.location) < slidingWindow)
-						continue;
+                // add to the distances
+                distances[i - 1] = dist;
 
-					// if not, calculate the distance between them
-					if (d2.distance - d1.distance < bestSoFar) {
-						abandon = false;
-						double d = distFunc.distance (d1.location, d2.location);
+                // if the calculated distance is less than best so far
+                if (i >= slidingWindow)
+                {
+                    if (dist.distance < bestSoFar)
+                    {
+                        // update bestSoFar
+                        bestSoFar = dist.distance;
+                        motifLocation2[0] = i;
+                    }
+                }
+            }
+*/            
+            // Sort the distances ascending
+            //distances.Sort ((x, y) => x.distance.CompareTo (y.distance));
+            Array.Sort(distances, delegate (Distance x, Distance y)
+            {
+                return x.distance.CompareTo(y.distance);
+            });
 
-						if (d < bestSoFar) {
-							bestSoFar = d;
-							motifLocation1 = d1.location;
-							motifLocation2[0] = d2.location;
-						}
-					}
-				}
-			}
+            // Begin finding motif pair
+            int offset = 0;
+            bool abandon = false;
+            while (!abandon)
+            {
+                ++offset;
+                abandon = true;
+                for (int i = 0; i < m - offset - 1; ++i)
+                {
+                    Distance d1 = distances[i];
+                    Distance d2 = distances[i + offset];
 
-			// Return to the caller
-			motifLoc = motifLocation1;
-			motifMatches = motifLocation2;
-		}
-	}
+                    // ignore time series pair whose are in sliding window
+                    if (Math.Abs(d1.location - d2.location) < slidingWindow)
+                        continue;
+
+                    // if not, calculate the distance between them
+                    if (d2.distance - d1.distance < bestSoFar)
+                    {
+                        abandon = false;
+                        double d = distFunc.distance(d1.location, d2.location);
+
+                        if (d < bestSoFar)
+                        {
+                            bestSoFar = d;
+                            motifLocation1 = d1.location;
+                            motifLocation2[0] = d2.location;
+                        }
+                    }
+                }
+            }
+
+            Console.WriteLine("value: " + distFunc.distance(motifLocation1, motifLocation2[0]));
+            // Return to the caller
+            motifLoc = motifLocation1;
+            motifMatches = motifLocation2;
+        }
+    }
 }
 
