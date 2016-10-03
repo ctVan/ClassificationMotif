@@ -72,6 +72,9 @@ namespace FindingMotifDiscord
     {
         // using for shared resources between several threads
         private Object lockObj = new Object();
+        private ReaderWriterLock rwl = new ReaderWriterLock();
+        // timeout for aquire rwl in milisecond
+        int timeout = 10000;
         const int THREAD_COUNT = 4;
         public struct Distance
         {
@@ -103,21 +106,38 @@ namespace FindingMotifDiscord
                 // if the calculated distance is less than best so far
                 if (i >= slidingWindow)
                 {
-                    Distance dist;
-                    dist.distance = distFunc.distance(refLocation, i);
-                    dist.location = i;
-                    //   Console.WriteLine("thread " + Thread.CurrentThread.Name+" loc:"+i + " " + dist.distance);
+                    double distance;
+                    int location;
+                    distance = distFunc.distance(refLocation, i);
+                    location = i;
                     // just use lock, can be updated using read write lock
-                    lock (lockObj)
+                    // Update: repplace lock byreadwritelock
+                    try
                     {
+                        rwl.AcquireReaderLock(timeout);
+
                         // add to the distances
-                        distances[i - 1] = dist;
-                        if (dist.distance < bestSoFar)
+                        distances[i - 1].distance = distance;
+                        distances[i - 1].location = location;
+
+                        if (distance < bestSoFar)
                         {
-                            // update bestSoFar
-                            bestSoFar = dist.distance;
-                            motifLoc2 = i;
+                            LockCookie lc = rwl.UpgradeToWriterLock(timeout);
+                            try
+                            {
+                                // update bestSoFar
+                                bestSoFar = distance;
+                                motifLoc2 = i;
+                            }
+                            finally
+                            {
+                                rwl.DowngradeFromWriterLock(ref lc);
+                            }
                         }
+                    }
+                    finally
+                    {
+                        rwl.ReleaseReaderLock();
                     }
                 }
             }
@@ -139,6 +159,12 @@ namespace FindingMotifDiscord
             motifLocation1 = refLocation;
             Distance[] distances = new Distance[m];
 
+
+            // initialize array of distances
+            for (int i = 0; i < m; i++)
+            {
+                distances[i] = new Distance();
+            }
 
             // Calculate using multi-threads
             Thread[] th = new Thread[THREAD_COUNT];
@@ -164,7 +190,7 @@ namespace FindingMotifDiscord
             {
                 th_.Join();
             }
-/*        
+/*
             // Calculate using single thread
             for (int i = 1; i < m; ++i)
             {
@@ -186,7 +212,7 @@ namespace FindingMotifDiscord
                     }
                 }
             }
-*/            
+ */          
             // Sort the distances ascending
             //distances.Sort ((x, y) => x.distance.CompareTo (y.distance));
             Array.Sort(distances, delegate (Distance x, Distance y)
