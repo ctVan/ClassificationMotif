@@ -159,7 +159,7 @@ namespace FindingMotifDiscord
             motifLocation1 = refLocation;
             Distance[] distances = new Distance[m];
 
-
+/*          Pause implement using multi thread
             // initialize array of distances
             for (int i = 0; i < m; i++)
             {
@@ -190,7 +190,7 @@ namespace FindingMotifDiscord
             {
                 th_.Join();
             }
-/*
+*/
             // Calculate using single thread
             for (int i = 1; i < m; ++i)
             {
@@ -212,7 +212,7 @@ namespace FindingMotifDiscord
                     }
                 }
             }
- */          
+           
             // Sort the distances ascending
             //distances.Sort ((x, y) => x.distance.CompareTo (y.distance));
             Array.Sort(distances, delegate (Distance x, Distance y)
@@ -220,6 +220,16 @@ namespace FindingMotifDiscord
                 return x.distance.CompareTo(y.distance);
             });
 
+
+            findMotifMK(m, distances, bestSoFar, ref motifLocation1, ref motifLocation2);
+            Console.WriteLine("value: " + distFunc.distance(motifLocation1, motifLocation2[0]));
+            // Return to the caller
+            motifLoc = motifLocation1;
+            motifMatches = motifLocation2;
+        }
+
+        public void findMotifMK(int m, Distance[] distances,double bestSoFar, ref int motifLocation1,ref int [] motifLocation2)
+        {
             // Begin finding motif pair
             int offset = 0;
             bool abandon = false;
@@ -251,11 +261,6 @@ namespace FindingMotifDiscord
                     }
                 }
             }
-
-            Console.WriteLine("value: " + distFunc.distance(motifLocation1, motifLocation2[0]));
-            // Return to the caller
-            motifLoc = motifLocation1;
-            motifMatches = motifLocation2;
         }
     }
 }
