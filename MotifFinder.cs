@@ -263,5 +263,24 @@ namespace FindingMotifDiscord
             }
         }
     }
+
+	/*
+	* Implement new MK algorthem
+	* Without requiring the users to input sliding window and R
+	* The algorithm will automatically find the sliding window based on extreme points and homothety
+	*/
+	public class MKAlgorithmWithExtremePoint : MKAlgorithm
+	{
+		public MKAlgorithmWithExtremePoint(float[] data)
+			: base(data, 0, 0)
+		{
+			
+		}
+
+		public override void findMotif (out int motifLoc, out int[] motifMatches)
+		{
+			base.findMotif (out motifLoc, out motifMatches);
+		} 
+	}
 }
 
