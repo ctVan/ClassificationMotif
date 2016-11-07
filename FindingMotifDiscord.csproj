@@ -41,6 +41,7 @@
     <Compile Include="Running.cs" />
     <Compile Include="FindingSlidingWindow.cs" />
     <Compile Include="Homothety.cs" />
+    <Compile Include="ExtremePointFinder.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
