@@ -14,19 +14,19 @@ namespace FindingMotifDiscord
 		public float[] transform(float[] timeSeries)
 		{
 			if (timeSeries.Length == standardLength)
-				return timeSeries.Clone ();
+				return (float[])timeSeries.Clone ();
 			else {
 				// find the min and max in time series
 				float yMin = findMinValue (timeSeries);
 				float yMax = findMaxValue (timeSeries);
 
 				// find the centre of time series
-				float xCenter = standardLength * 1.0f / 2;
+				float xCenter = timeSeries.Length * 1.0f / 2;
 				float yCenter = (yMin + yMax) / 2;
 
 				// transform the time series to predefined length
-				float k = timeSeries.Length * 1.0f / standardLength;
-				float[] result = new float[standardLength];
+				float k = standardLength * 1.0f / timeSeries.Length;
+				float[] result;
 				backwardTransform (out result, timeSeries, xCenter, yCenter, k);
 				return result;
 			}
@@ -34,9 +34,11 @@ namespace FindingMotifDiscord
 
 		private void backwardTransform(out float[] destination, float[] timeSeries, float xCenter, float yCenter, float k)
 		{
-			for (int i = 0; i < destination.Length; ++i) {
-				float xOriginalIndex = k * (i - xCenter) + xCenter;
-				int xOriginalIndexRounded = (float)Math.Floor (xOriginalIndex);
+			destination = new float[standardLength];
+			float start = -k * xCenter + xCenter;
+			for (int i = 0; i < standardLength; ++i) {
+				float xOriginalIndex = (i + start - xCenter) / k + xCenter;
+				int xOriginalIndexRounded = (int)xOriginalIndex;
 				destination [i] = bilinearInterpolate (
 					timeSeries [xOriginalIndexRounded], timeSeries [xOriginalIndexRounded + 1], xOriginalIndexRounded, xOriginalIndex);
 			}
