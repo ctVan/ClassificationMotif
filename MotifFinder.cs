@@ -271,16 +271,45 @@ namespace FindingMotifDiscord
 	*/
 	public class MKAlgorithmWithExtremePoint : MKAlgorithm
 	{
-		public MKAlgorithmWithExtremePoint(float[] data)
+		private long[] extremePointLocations;
+		private float[][] subTimeSeriesEqualLength;
+
+		public MKAlgorithmWithExtremePoint(float[] data, float extremePointR)
 			: base(data, 0, 0)
 		{
-			
+			AbstractExtremePointFinder extremePointFinder = new ExtremePointFinder (data, extremePointR);
+			extremePointFinder.genExtremePoint (extremePointLocations);
+		
+			// split the original times series into sub timeseries based on the location of extreme points
+			float[][] subTimeSeries = splitData(data, extremePointLocations);
+
+			// after that, using Homothety to 
+			// transform the sub time series into equal-length time series
+			// but first, we have to find the standard time series' length to transform to
+			int standardLength = findStandardLength(subTimeSeries);
+
+			// finally, we can use Homothety to transform
+			Homothety homothety = new Homothety(standardLength);
+			subTimeSeriesEqualLength = new float[subTimeSeries.Length][];
+			for (int i = 0; i < subTimeSeriesEqualLength.Length; ++i)
+				subTimeSeriesEqualLength [i] = homothety.transform (subTimeSeries [i]);
 		}
 
 		public override void findMotif (out int motifLoc, out int[] motifMatches)
 		{
 			base.findMotif (out motifLoc, out motifMatches);
 		} 
+
+		private static float[][] splitData(float[] data, long[] locations)
+		{
+			// TODO: implement this
+			return null;
+		}
+
+		private static int findStandardLength(float[][] subTimeSeries)
+		{
+			// TODO: find the standard length in these sub time series
+		}
 	}
 }
 
