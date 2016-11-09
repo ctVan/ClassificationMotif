@@ -277,8 +277,8 @@ namespace FindingMotifDiscord
 		public MKAlgorithmWithExtremePoint(float[] data, float extremePointR)
 			: base(data, 0, 0)
 		{
-			AbstractExtremePointFinder extremePointFinder = new ExtremePointFinder (data, extremePointR);
-			extremePointFinder.genExtremePoint (extremePointLocations);
+			AbstractExtremePointFinder extremePointFinder = new ExtremePointFinder (Array.ConvertAll(data, x => (double)x), extremePointR);
+			extremePointFinder.genExtremePoint (out extremePointLocations);
 		
 			// split the original times series into sub timeseries based on the location of extreme points
 			float[][] subTimeSeries = splitData(data, extremePointLocations);
@@ -308,7 +308,10 @@ namespace FindingMotifDiscord
 
 		private static int findStandardLength(float[][] subTimeSeries)
 		{
-			// TODO: find the standard length in these sub time series
+			int totalLength = 0;
+			foreach (float[] timeSeries in subTimeSeries)
+				totalLength += timeSeries.Length;
+			return totalLength / subTimeSeries.Length;
 		}
 	}
 }
