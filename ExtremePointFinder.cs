@@ -8,26 +8,45 @@ namespace FindingMotifDiscord
     public abstract class AbstractExtremePointFinder
     {
         // array of time series
-        protected double[] data;
+        protected float[] data;
         // length of time series
         protected long N;
         // compression rate 
-        protected double R;
-        public AbstractExtremePointFinder(double[] data, double R)
+        protected float R;
+        public AbstractExtremePointFinder(float[] data, float R)
         {
             this.data = data;
             this.N = data.Length;
             this.R = R;
         }
-        public abstract void genExtremePoint(out long[] ExtremePointArr);
+        public abstract void genExtremePoint(out long[] ExtremePointArr, out int estimatedLength);
     }
     public class ExtremePointFinder : AbstractExtremePointFinder
     {
-        public ExtremePointFinder(double[] data, double R) : base(data, R)
+        public ExtremePointFinder(float[] data, float R) : base(data, R)
         {
 
         }
-        public override void genExtremePoint(out long[] ExtremePointArr)
+        private void estimateLength(long[] extemePointArr,out int estimatedLength) {
+            long sumLength = 0;
+            // TODO: check this if get means -> the length of time series
+            for (int i = 0; i < extemePointArr.Length - 1; i++) {
+                sumLength += extemePointArr[i + 1] - extemePointArr[i];
+            }
+            float len = sumLength / extemePointArr.Length;
+            estimatedLength = (int)len;
+
+            // count the desity
+            int count = 0;
+            for (int i = 0; i < extemePointArr.Length - 1; i++) {
+                long ll = extemePointArr[i + 1] - extemePointArr[i];
+                if ((ll / estimatedLength >= 0.9) || (ll / estimatedLength <= 1.1))
+                    count++; 
+            }
+            double density = (double)count / extemePointArr.Length;
+            Console.WriteLine("desity: " + (Math.Round(density,2)*100).ToString() +"%");
+        }
+        public override void genExtremePoint(out long[] ExtremePointArr, out int estimatedLength)
         {
             List<long> arr = new List<long>();
             arr.Add(0);
@@ -44,6 +63,7 @@ namespace FindingMotifDiscord
                 arr.Add(i);
             }
             ExtremePointArr = arr.ToArray();
+            estimateLength(ExtremePointArr, out estimatedLength);
         }
         private long findFisrtTwo()
         {
@@ -58,6 +78,7 @@ namespace FindingMotifDiscord
                     imin = i;
                 if (data[i] > data[imax])
                     imax = i;
+                i++;
                 // for debugging
                 /*             if (imin < imax)
                                  Console.WriteLine("(" + data[imin].ToString() + " " + imin + ") " + "(" + data[imax].ToString() + " " + imax + ")");

@@ -141,7 +141,7 @@ namespace FindingMotifDiscord
 			// Testing MK algorithm
 			const int slidingWindow = 128;
 			const float R = 0.01f;
-			AbstractMotifFinder mkAlgorithm = new MKAlgorithm(data, slidingWindow, R /* not use */);
+			AbstractMotifFinder mkAlgorithm = new ExPointMotifFinder(data, slidingWindow, R /* not use */);
 			running.runMotifFinder (mkAlgorithm);
             
             System.Console.ReadKey();
