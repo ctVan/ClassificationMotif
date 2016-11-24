@@ -11,6 +11,17 @@ namespace FindingMotifDiscord
         protected float[] data;
         protected AbstractDistanceFunction distFunc;
 
+        public struct Distance
+        {
+            public int location;
+            public double distance;
+            public Distance(int location, double distance)
+            {
+                this.location = location;
+                this.distance = distance;
+            }
+        }
+
         public AbstractMotifFinder(float[] data, int slidingWindow, float R, AbstractDistanceFunction distFunc)
         {
             this.data = data;
@@ -76,16 +87,7 @@ namespace FindingMotifDiscord
         // timeout for aquire rwl in milisecond
         int timeout = 10000;
         const int THREAD_COUNT = 4;
-        public struct Distance
-        {
-            public int location;
-            public double distance;
-            public Distance(int location, double distance)
-            {
-                this.location = location;
-                this.distance = distance;
-            }
-        }
+
 
         public MKAlgorithm(float[] data, int slidingWindow, float R)
             : base(data, slidingWindow, R, new EucleanDistance(data, slidingWindow))
@@ -159,38 +161,38 @@ namespace FindingMotifDiscord
             motifLocation1 = refLocation;
             Distance[] distances = new Distance[m];
 
-/*          Pause implement using multi thread
-            // initialize array of distances
-            for (int i = 0; i < m; i++)
-            {
-                distances[i] = new Distance();
-            }
+            /*          Pause implement using multi thread
+                        // initialize array of distances
+                        for (int i = 0; i < m; i++)
+                        {
+                            distances[i] = new Distance();
+                        }
 
-            // Calculate using multi-threads
-            Thread[] th = new Thread[THREAD_COUNT];
-            for (int i = 0; i < THREAD_COUNT; i++)
-            {
-                int begin, end;
-                if (i == 0)
-                    begin = 1;
-                else
-                    begin = i * len / THREAD_COUNT;
-                if (i == THREAD_COUNT - 1)
-                    end = m;
-                else
-                    end = (i + 1) * len / THREAD_COUNT - 1;
-                Console.WriteLine("cap thread: " + i + " " + begin + " " + end);
-                ThreadStart starter = () => calRefDistance(begin, end, refLocation, ref bestSoFar, ref motifLocation2[0], ref distances);
+                        // Calculate using multi-threads
+                        Thread[] th = new Thread[THREAD_COUNT];
+                        for (int i = 0; i < THREAD_COUNT; i++)
+                        {
+                            int begin, end;
+                            if (i == 0)
+                                begin = 1;
+                            else
+                                begin = i * len / THREAD_COUNT;
+                            if (i == THREAD_COUNT - 1)
+                                end = m;
+                            else
+                                end = (i + 1) * len / THREAD_COUNT - 1;
+                            Console.WriteLine("cap thread: " + i + " " + begin + " " + end);
+                            ThreadStart starter = () => calRefDistance(begin, end, refLocation, ref bestSoFar, ref motifLocation2[0], ref distances);
 
-                th[i] = new Thread(starter);
-                th[i].Name = i.ToString();
-                th[i].Start();
-            }
-            foreach (Thread th_ in th)
-            {
-                th_.Join();
-            }
-*/
+                            th[i] = new Thread(starter);
+                            th[i].Name = i.ToString();
+                            th[i].Start();
+                        }
+                        foreach (Thread th_ in th)
+                        {
+                            th_.Join();
+                        }
+            */
             // Calculate using single thread
             for (int i = 1; i < m; ++i)
             {
@@ -212,7 +214,7 @@ namespace FindingMotifDiscord
                     }
                 }
             }
-           
+
             // Sort the distances ascending
             //distances.Sort ((x, y) => x.distance.CompareTo (y.distance));
             Array.Sort(distances, delegate (Distance x, Distance y)
@@ -221,15 +223,6 @@ namespace FindingMotifDiscord
             });
 
 
-            findMotifMK(m, distances, bestSoFar, ref motifLocation1, ref motifLocation2);
-            Console.WriteLine("value: " + distFunc.distance(motifLocation1, motifLocation2[0]));
-            // Return to the caller
-            motifLoc = motifLocation1;
-            motifMatches = motifLocation2;
-        }
-
-        public void findMotifMK(int m, Distance[] distances,double bestSoFar, ref int motifLocation1,ref int [] motifLocation2)
-        {
             // Begin finding motif pair
             int offset = 0;
             bool abandon = false;
@@ -261,58 +254,187 @@ namespace FindingMotifDiscord
                     }
                 }
             }
+            Console.WriteLine("value: " + distFunc.distance(motifLocation1, motifLocation2[0]));
+            // Return to the caller
+            motifLoc = motifLocation1;
+            motifMatches = motifLocation2;
         }
+
+
     }
+
 
 	/*
 	* Implement new MK algorthem
 	* Without requiring the users to input sliding window and R
 	* The algorithm will automatically find the sliding window based on extreme points and homothety
 	*/
-	public class MKAlgorithmWithExtremePoint : MKAlgorithm
-	{
-		private long[] extremePointLocations;
-		private float[][] subTimeSeriesEqualLength;
+//	public class MKAlgorithmWithExtremePoint : MKAlgorithm
+//	{
+//		private long[] extremePointLocations;
+//		private float[][] subTimeSeriesEqualLength;
+//
+//		public MKAlgorithmWithExtremePoint(float[] data, float extremePointR)
+//			: base(data, 0, 0)
+//		{
+//			AbstractExtremePointFinder extremePointFinder = new ExtremePointFinder (data, extremePointR);
+//			int estimatedStandardLength;
+//			extremePointFinder.genExtremePoint (out extremePointLocations, out estimatedStandardLength);
+//		
+//			// split the original times series into sub timeseries based on the location of extreme points
+//			float[][] subTimeSeries = splitData(data, extremePointLocations);
+//
+//			// after that, using Homothety to 
+//			// transform the sub time series into equal-length time series
+//			// but first, we have to find the standard time series' length to transform to
+//			int standardLength = findStandardLength(subTimeSeries);
+//
+//			// finally, we can use Homothety to transform
+//			Homothety homothety = new Homothety(standardLength);
+//			subTimeSeriesEqualLength = new float[subTimeSeries.Length][];
+//			for (int i = 0; i < subTimeSeriesEqualLength.Length; ++i)
+//				subTimeSeriesEqualLength [i] = homothety.transform (subTimeSeries [i]);
+//		}
+//
+//		public override void findMotif (out int motifLoc, out int[] motifMatches)
+//		{
+//			base.findMotif (out motifLoc, out motifMatches);
+//		} 
+//
+//		private static float[][] splitData(float[] data, long[] locations)
+//		{
+//			// TODO: implement this
+//			return null;
+//		}
+//
+//		private static int findStandardLength(float[][] subTimeSeries)
+//		{
+//			int totalLength = 0;
+//			foreach (float[] timeSeries in subTimeSeries)
+//				totalLength += timeSeries.Length;
+//			return totalLength / subTimeSeries.Length;
+//		}
+//	}
 
-		public MKAlgorithmWithExtremePoint(float[] data, float extremePointR)
-			: base(data, 0, 0)
-		{
-			AbstractExtremePointFinder extremePointFinder = new ExtremePointFinder (Array.ConvertAll(data, x => (double)x), extremePointR);
-			extremePointFinder.genExtremePoint (out extremePointLocations);
-		
-			// split the original times series into sub timeseries based on the location of extreme points
-			float[][] subTimeSeries = splitData(data, extremePointLocations);
 
-			// after that, using Homothety to 
-			// transform the sub time series into equal-length time series
-			// but first, we have to find the standard time series' length to transform to
-			int standardLength = findStandardLength(subTimeSeries);
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    // Motif finder using Extreme Point
 
-			// finally, we can use Homothety to transform
-			Homothety homothety = new Homothety(standardLength);
-			subTimeSeriesEqualLength = new float[subTimeSeries.Length][];
-			for (int i = 0; i < subTimeSeriesEqualLength.Length; ++i)
-				subTimeSeriesEqualLength [i] = homothety.transform (subTimeSeries [i]);
-		}
+    public class ExPointMotifFinder : AbstractMotifFinder
+    {
+        public ExPointMotifFinder(float[] data, int slidingWindow, float R)
+            : base(data, slidingWindow, R, new EucleanDistance(data, slidingWindow))
+        {
 
-		public override void findMotif (out int motifLoc, out int[] motifMatches)
-		{
-			base.findMotif (out motifLoc, out motifMatches);
-		} 
+        }
+        // TODO: change this
+        private float __distance(float[] sub1, float[] sub2)
+        {
+            float dist = 0;
+            for (int i = 0; i < sub1.Length; i++)
+            {
+                float temp = sub1[1] - sub2[2];
+                dist += temp * temp;
+            }
+            return dist;
+        }
+        public override void findMotif(out int motifLoc, out int[] motifMatches)
+        {
+            double bestSoFar = Double.MaxValue;
+            int motifLocation1 = -1;
+            int[] motifLocation2 = { -1 };
 
-		private static float[][] splitData(float[] data, long[] locations)
-		{
-			// TODO: implement this
-			return null;
-		}
+            float r = 1.5f;
+            int lengthMotif = 0;
+            AbstractExtremePointFinder EPF = new ExtremePointFinder(data, r);
+            long[] ExtremePointArr;
+            EPF.genExtremePoint(out ExtremePointArr, out lengthMotif);
+            // TODO: calculate standard length of motif cadidates
+            Homothety homothey = new Homothety(lengthMotif);
 
-		private static int findStandardLength(float[][] subTimeSeries)
-		{
-			int totalLength = 0;
-			foreach (float[] timeSeries in subTimeSeries)
-				totalLength += timeSeries.Length;
-			return totalLength / subTimeSeries.Length;
-		}
-	}
+            // create new data array
+            float[][] dataArr = new float[ExtremePointArr.Length - 1][];
+            for (int i = 0; i < ExtremePointArr.Length - 1; i++)
+            {
+                long begin = ExtremePointArr[i];
+                begin = (begin == 0) ? begin : begin + 1;
+                long end = ExtremePointArr[i + 1];
+                // copy subsequence to new array
+                float[] inArr;
+                if (begin ==0)
+                    inArr = new float[end - begin+1];
+                else
+                    inArr = new float[end - begin];
+                for (long j = begin; j < end; j++)
+                {
+                    inArr[j-begin] = data[j];
+                }
+                dataArr[i] = homothey.transform(inArr);
+            }
+
+            // calculate distance
+            Distance[] distances = new Distance[dataArr.Length];
+            // chose 0 as a reference point
+            int refObj = 0;
+
+            for (int i = 1; i < dataArr.Length; i++)
+            {
+                Distance dist;
+                dist.distance = __distance(dataArr[refObj], dataArr[i]);
+                // we'll convert back to actual index later
+                dist.location = i;
+
+                // add to the distances
+                distances[i - 1] = dist;
+
+                // defenitely not trivial match
+                if (dist.distance < bestSoFar)
+                {
+                    // update bestsofar
+                    bestSoFar = dist.distance;
+                    motifLocation2[0] = i;
+                }
+            }
+            // Sort the distances ascending
+            Array.Sort(distances, delegate (Distance x, Distance y)
+            {
+                return x.distance.CompareTo(y.distance);
+            });
+
+
+            // Begin finding motif pair
+            int offset = 0;
+            bool abandon = false;
+            while (!abandon)
+            {
+                ++offset;
+                abandon = true;
+                for (int i = 0; i < distances.Length; i++)
+                {
+                    Distance d1 = distances[i];
+                    Distance d2 = distances[i + offset];
+
+                    // calculate the distance between them
+                    if (d2.distance - d1.distance < bestSoFar)
+                    {
+                        abandon = false;
+                        double d = distFunc.distance(d1.location, d2.location);
+
+                        if (d < bestSoFar)
+                        {
+                            bestSoFar = d;
+                            motifLocation1 = d1.location;
+                            motifLocation2[0] = d2.location;
+                        }
+                    }
+
+                }
+            }
+            // Return to the caller
+            motifLoc = motifLocation1;
+            motifMatches = motifLocation2;
+        }
+    }
+
 }
 
