@@ -344,7 +344,7 @@ namespace FindingMotifDiscord
             int motifLocation1 = -1;
             int[] motifLocation2 = { -1 };
 
-            float r = 1.5f;
+            float r = 1.1f;
             int lengthMotif = 0;
             AbstractExtremePointFinder EPF = new ExtremePointFinder(data, r);
             long[] ExtremePointArr;
@@ -357,18 +357,23 @@ namespace FindingMotifDiscord
             for (int i = 0; i < ExtremePointArr.Length - 1; i++)
             {
                 long begin = ExtremePointArr[i];
-                begin = (begin == 0) ? begin : begin + 1;
+                begin = (begin == 0) ? begin+1 : begin;
                 long end = ExtremePointArr[i + 1];
                 // copy subsequence to new array
                 float[] inArr;
-                if (begin ==0)
-                    inArr = new float[end - begin+1];
-                else
-                    inArr = new float[end - begin];
-                for (long j = begin; j < end; j++)
+                if (begin == 0)
                 {
-                    inArr[j-begin] = data[j];
+                    inArr = new float[end - begin + 1];
+                    for (long j = begin; j < end + 1; j++)
+                        inArr[j - begin] = data[j];               
                 }
+                else
+                {
+                    inArr = new float[end - begin];
+                    for (long j = begin; j < end; j++)
+                        inArr[j - begin] = data[j];
+                }
+               
                 dataArr[i] = homothey.transform(inArr);
             }
 

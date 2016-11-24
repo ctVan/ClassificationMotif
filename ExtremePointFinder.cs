@@ -40,7 +40,8 @@ namespace FindingMotifDiscord
             int count = 0;
             for (int i = 0; i < extemePointArr.Length - 1; i++) {
                 long ll = extemePointArr[i + 1] - extemePointArr[i];
-                if ((ll / estimatedLength >= 0.9) || (ll / estimatedLength <= 1.1))
+                Console.WriteLine(ll);
+                if ((ll / estimatedLength >= 0.9) && (ll / estimatedLength <= 1.1))
                     count++; 
             }
             double density = (double)count / extemePointArr.Length;
