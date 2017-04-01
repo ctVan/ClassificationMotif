@@ -66,7 +66,6 @@ namespace ClassificationMotif
 
         private double estimateLength(long[] extemePointArr, out int estimatedLength)
         {
-            long sumLength = 0;
             int count1 = (int)extemePointArr.LongLength / 2;
             float len = N / count1;
             estimatedLength = (int)len;

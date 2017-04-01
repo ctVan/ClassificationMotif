@@ -66,7 +66,7 @@ namespace ClassificationMotif
                 else
                     end = ExtremePointArr[i + 2];
 
-                Console.WriteLine("begin: " + begin.ToString() + ", end: " + end.ToString());
+               // Console.WriteLine("begin: " + begin.ToString() + ", end: " + end.ToString());
                 // copy subsequence to new array
                 float[] inArr;
                 inArr = new float[end - begin];
@@ -114,7 +114,7 @@ namespace ClassificationMotif
             {
                 ++offset;
                 abandon = true;
-                for (int i = 0; i < distances.Length; i++)
+                for (int i = 0; i < distances.Length - 1 - offset; i++)
                 {
                     Point d1 = distances[i];
                     Point d2 = distances[i + offset];
@@ -137,7 +137,9 @@ namespace ClassificationMotif
             }
             // Return to the caller
             motifLoc = motifLocation1;
+            //          motifLocation2[0] = (int)ExtremePointArr[motifLocation2[0] * 2];
             motifMatches = motifLocation2;
+            slidingWindow = 0;
         }
 
         public override void findMotif(out int motifLoc, out int[] motifMatches)
