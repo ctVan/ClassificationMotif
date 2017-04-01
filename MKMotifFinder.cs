@@ -113,5 +113,10 @@ namespace ClassificationMotif
                 }
             }
         } // end finding motif MK
+
+        public override void findMotif(out int motifLoc, out int[] motifMatches, out long[] ExtremePointArr)
+        {
+            throw new NotImplementedException();
+        }
     }// end class MKmotif Finder
 }

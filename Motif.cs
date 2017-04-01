@@ -40,43 +40,55 @@ namespace ClassificationMotif
             float R = float.Parse(RTxt.Text);
             // need to be changed in motif finder
             //AbstractMotifFinder motifFinder = new MotifFinder(data, slidingWindow, R, new EucleanDistanceArray(data, slidingWindow));
-            AbstractMotifFinder motifFinder = new MotifFinder(data, slidingWindow, R, new EuclideanDistance(data, slidingWindow));
+            AbstractMotifFinder motifFinder = new ExPointMotifFinder(data, slidingWindow, R, new EuclideanDistance(data, slidingWindow));
             int motifLoc;
             int[] motifMatches;
 
             var watch = System.Diagnostics.Stopwatch.StartNew();
             System.Console.WriteLine("\nBegin finding motif ...");
-            motifFinder.findMotif(out motifLoc, out motifMatches);
+            long[] ExtremePointArr;
+            motifFinder.findMotif(out motifLoc, out motifMatches, out ExtremePointArr);
+            // draw chart line
+            for (int i = 0; i < ExtremePointArr.LongLength; i++)
+            {
+                chartLine.Series["rawData"].Points.AddXY(ExtremePointArr[i], data[ExtremePointArr[i]]);
+            }
             System.Console.WriteLine("Motif finding finish");
             watch.Stop();
             System.Console.WriteLine("Time to find motif : " + watch.ElapsedMilliseconds.ToString());
-
-            // draw chart line
-            for (int i = 0; i < data.Length; i++)
-            {
-                chartLine.Series["rawData"].Points.AddXY(i, data[i]);
-            }
-            foreach (int loc in motifMatches) {
-                for (int i = loc; i < loc + slidingWindow; i++)
-                {
-                    chartLine.Series["motif"].Points.AddXY(i, data[i]);
-                }   
-            }
-            if (motifMatches.Length > 0) {
-                // show motif element
-                for(int i = motifMatches[0]; i < motifMatches[0] + slidingWindow; i++)
-                {
-                    chartLine.Series["motifElement"].Points.AddXY(i, data[i] - 3);
-                }
-            }
+            chartLine.Series["rawData"].Color = Color.Red;
             
-            chartLine.Series["rawData"].Color = Color.Blue;
-            chartLine.Series["motif"].Color = Color.Red;
-            chartLine.Series["motifElement"].Color = Color.Red;
+                        // draw chart line
+                        for (int i = 0; i < data.Length; i++)
+                        {
+                            chartLine.Series["motif"].Points.AddXY(i, data[i]);
+                        }
+            chartLine.Series["motif"].Color = Color.Blue;
+            /*        
+                    foreach (int loc in motifMatches) {
+                        for (int i = loc; i < loc + slidingWindow; i++)
+                        {
+                            chartLine.Series["motif"].Points.AddXY(i, data[i]);
+                        }   
+                    }
+                    if (motifMatches.Length > 0) {
+                        // show motif element
+                        for(int i = motifMatches[0]; i < motifMatches[0] + slidingWindow; i++)
+                        {
+                            chartLine.Series["motifElement"].Points.AddXY(i, data[i] - 3);
+                        }
+                    }
+
+                    chartLine.Series["rawData"].Color = Color.Blue;
+                    chartLine.Series["motif"].Color = Color.Red;
+                    chartLine.Series["motifElement"].Color = Color.Red;
+                    */
         }
 
         private void browseBtn_Click(object sender, EventArgs e)
         {
+            SdwTxt.Text = "1";
+            RTxt.Text = "2";
             OpenFileDialog fileChooser = new OpenFileDialog();
             string currentDir = Directory.GetCurrentDirectory();
             string path = Directory.GetParent(currentDir).Parent.FullName;

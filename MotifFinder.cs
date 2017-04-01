@@ -22,6 +22,7 @@ namespace ClassificationMotif
         }
 
         public abstract void findMotif(out int motifLoc, out int[] motifMatches);
+        public abstract void findMotif(out int motifLoc, out int[] motifMatches, out long[] ExtremePointArr);
     }
 
     public class MotifFinder : AbstractMotifFinder
@@ -62,6 +63,11 @@ namespace ClassificationMotif
             }
             // return
             motifMatches = motifMatchesList.ToArray();
+        }
+
+        public override void findMotif(out int motifLoc, out int[] motifMatches, out long[] ExtremePointArr)
+        {
+            throw new NotImplementedException();
         }
     }
 }

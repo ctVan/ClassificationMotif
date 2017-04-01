@@ -49,6 +49,8 @@
   <ItemGroup>
     <Compile Include="DataLoader.cs" />
     <Compile Include="DistanceFunction.cs" />
+    <Compile Include="ExtremelyPoint.cs" />
+    <Compile Include="Homothety.cs" />
     <Compile Include="MKMotifFinder.cs" />
     <Compile Include="Motif.cs">
       <SubType>Form</SubType>
@@ -57,6 +59,7 @@
       <DependentUpon>Motif.cs</DependentUpon>
     </Compile>
     <Compile Include="MotifFinder.cs" />
+    <Compile Include="ExPointMotifFinder.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Motif.resx">

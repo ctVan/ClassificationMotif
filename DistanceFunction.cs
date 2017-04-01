@@ -18,6 +18,7 @@ namespace ClassificationMotif
         }
 
         public abstract float distance(int t1Loc, int t2Loc);
+        public abstract float euclidSquare(float[] sub1, float[] sub2);
     }
 
     // Original Euclidean distance
@@ -36,25 +37,19 @@ namespace ClassificationMotif
             }
             return (float)Math.Sqrt((double)eucleanDist);
         }
-    }
 
-    // square of euclidean distance that not to be got sqrt when computing
-    public class EuclideanDistanceSquare : AbstractDistanceFunction
-    {
-        public EuclideanDistanceSquare(float[] data, int slidingWindow)
-            : base(data, slidingWindow) { }
-
-        public override float distance(int t1Loc, int t2Loc)
+        public override float euclidSquare(float[] sub1, float[] sub2)
         {
-            float eucleanDist = 0;
-            for (int i = 0; i < slidingWindow; i++)
+            float dist = 0;
+            for (int i = 0; i < sub1.Length; i++)
             {
-                float d = data[t1Loc + i] - data[t2Loc + i];
-                eucleanDist += d * d;
+                float temp = sub1[1] - sub2[2];
+                dist += temp * temp;
             }
-            return eucleanDist;
+            return dist;
         }
     }
+
 
     // imporve calculating distance using Euclidean distance by dynamic programing
     public class EucleanDistanceArray : AbstractDistanceFunction
@@ -123,6 +118,19 @@ namespace ClassificationMotif
             {
                 float diff = data[t1Loc + i] - data[t2Loc + i];
                 dist += diff * diff;
+            }
+            return dist;
+        }
+        
+        // imput: 2 sub time series
+        // return: square root of their distance
+        public override float euclidSquare(float[] sub1, float[] sub2)
+        {
+            float dist = 0;
+            for (int i = 0; i < sub1.Length; i++)
+            {
+                float temp = sub1[1] - sub2[2];
+                dist += temp * temp;
             }
             return dist;
         }
