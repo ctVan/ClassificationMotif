@@ -34,7 +34,7 @@ namespace ClassificationMotif
             int[] motifLocation2 = { -1 };
 
             int isRatio = 0;
-            float r = 1.14f;
+            float r = 1.37f;
             int lengthMotif = 400;
             AbstractExtremePointFinder EPF = new ExtremePointFinder(data, r);
 
@@ -44,12 +44,7 @@ namespace ClassificationMotif
             else
                 EPF.genExtremePoint(out ExtremePointArr, out lengthMotif);
 
-            Console.WriteLine("Sliding window: " + lengthMotif.ToString());
-
-            //           // Return to the caller
-            //           motifLoc = motifLocation1;
-            //            motifMatches = motifLocation2;
-            //            return;
+            Console.WriteLine("Sliding window: " + lengthMotif.ToString() + ", R" + EPF.maxR.ToString());
 
             // TODO: calculate standard length of motif cadidates
             Homothety homothey = new Homothety(lengthMotif);
