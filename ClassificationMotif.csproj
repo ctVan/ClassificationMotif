@@ -51,6 +51,7 @@
     <Compile Include="DistanceFunction.cs" />
     <Compile Include="ExtremelyPoint.cs" />
     <Compile Include="Homothety.cs" />
+    <Compile Include="KNNClassification.cs" />
     <Compile Include="MKMotifFinder.cs" />
     <Compile Include="Motif.cs">
       <SubType>Form</SubType>

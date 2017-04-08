@@ -34,7 +34,7 @@ namespace ClassificationMotif
             int[] motifLocation2 = { -1 };
 
             int isRatio = 0;
-            float r = 1.37f;
+            float r = 1.45f;
             int lengthMotif = 400;
             AbstractExtremePointFinder EPF = new ExtremePointFinder(data, r);
 

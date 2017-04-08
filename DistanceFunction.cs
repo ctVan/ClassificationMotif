@@ -19,6 +19,7 @@ namespace ClassificationMotif
 
         public abstract float distance(int t1Loc, int t2Loc);
         public abstract float euclidSquare(float[] sub1, float[] sub2);
+        public abstract float binaryDistance(bool[] b1, bool[] b2);
     }
 
     // Original Euclidean distance
@@ -26,6 +27,37 @@ namespace ClassificationMotif
     {
         public EuclideanDistance(float[] data, int slidingWindow)
             : base(data, slidingWindow) { }
+
+        public override float binaryDistance(bool[] b1, bool[] b2)
+        {
+            if (b1.Length != b2.Length)
+                return -1;
+            int LENGTH = b1.Length;
+            // a: element of two array respectively equal 1
+            // b: b1[i] = 1, b2[i] = 0
+            // c: b1[i] = 0, b2[i] = 1
+            // d: b1[i] = 0, b2[i] = 0
+
+
+            /*           object b2
+             *            1   0
+             * obj    1   a   b
+             * b1     0   c   d
+             */
+            int a = 0, b = 0, c = 0, d = 0;
+            for (int i = 0; i < LENGTH; i++)
+            {
+                if (b1[i] == true && b2[i] == true)
+                    a++;
+                else if (b1[i] == true && b2[i] == false)
+                    b++;
+                else if (b1[i] == false && b2[i] == true)
+                    c++;
+                else if (b1[i] == false && b2[i] == false)
+                    d++;
+            }
+            return (b + c) / (a + b + c + d);
+        }
 
         public override float distance(int t1Loc, int t2Loc)
         {
@@ -133,6 +165,11 @@ namespace ClassificationMotif
                 dist += temp * temp;
             }
             return dist;
+        }
+
+        public override float binaryDistance(bool[] b1, bool[] b2)
+        {
+            throw new NotImplementedException();
         }
     }
 

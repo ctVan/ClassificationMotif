@@ -35,6 +35,18 @@ namespace ClassificationMotif
         // this function call all method to complete task
         private void runBtn_Click(object sender, EventArgs e)
         {
+            /*
+            bool[] b1 = { true, false, true, false, false, false };
+            bool[] b2 = { true, false, true, false, true, false };
+            bool[] b3 = { true, true, false, false, false, false };
+
+            EuclideanDistance d = new EuclideanDistance(data, 1);
+            float t;
+            t = d.binaryDistance(b1, b2);
+            t = d.binaryDistance(b1, b3);
+            t = d.binaryDistance(b2, b3);
+            */
+
             // passing data to motif finder
             int slidingWindow = Int32.Parse(SdwTxt.Text);
             float R = float.Parse(RTxt.Text);
@@ -46,8 +58,9 @@ namespace ClassificationMotif
             int[] motifMatches;
             long[] ExtremePointArr;
             var watch = System.Diagnostics.Stopwatch.StartNew();
+            motifLoc = -1;
             System.Console.WriteLine("\nBegin finding motif ...");
-            motifFinder.findMotif(out motifLoc, out motifMatches, out ExtremePointArr);
+    //        motifFinder.findMotif(out motifLoc, out motifMatches, out ExtremePointArr);
             System.Console.WriteLine("Motif finding finish");
             watch.Stop();
             System.Console.WriteLine("Time to find motif : " + watch.ElapsedMilliseconds.ToString());
@@ -58,11 +71,11 @@ namespace ClassificationMotif
                 chartLine.Series["rawData"].Points.AddXY(i, data[i]);
             }
 
-            
+            /*
             int begin, lenMotif;
             if (motifLoc != -1)
             {
-                /*
+                
                 // draw a first motif
                 begin = (int)ExtremePointArr[motifLoc * 2];
                 lenMotif = (int)(ExtremePointArr[motifLoc * 2 + 2] - ExtremePointArr[motifLoc * 2]);
@@ -70,8 +83,8 @@ namespace ClassificationMotif
                 {
                     chartLine.Series["motif"].Points.AddXY(i, data[i]);
                 }
-
-                */
+            
+                
                 // draw a list of motif, with MK just 1 motif in list
                 foreach (int loc in motifMatches)
                 {
@@ -92,7 +105,7 @@ namespace ClassificationMotif
                 {
                     chartLine.Series["motifElement"].Points.AddXY(i, data[i]);
                 }
-                /*
+                
                 // draw a list of motif, with MK just 1 motif in list
                 foreach (int loc in motifMatches)
                 {
@@ -102,9 +115,9 @@ namespace ClassificationMotif
                     {
                         chartLine.Series["motifElement"].Points.AddXY(i, data[i] - 2);
                     }
-                }*/
+                }
             }
-
+        */
             chartLine.Series["rawData"].Color = Color.Blue;
             chartLine.Series["motif"].Color = Color.Red;
             chartLine.Series["motifElement"].Color = Color.Red;
