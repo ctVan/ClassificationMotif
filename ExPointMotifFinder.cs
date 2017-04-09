@@ -27,24 +27,29 @@ namespace ClassificationMotif
 
         }
 
-        public override void findMotif(out int motifLoc, out int[] motifMatches, out long[] ExtremePointArr)
+        public override void findMotif(out int motifLoc, out int[] motifMatches, out long[] ExtremePointArr, int isRatio)
         {
             double bestSoFar = Double.MaxValue;
             int motifLocation1 = -1;
             int[] motifLocation2 = { -1 };
 
-            int isRatio = 0;
-            float r = 1.45f;
             int lengthMotif = 400;
-            AbstractExtremePointFinder EPF = new ExtremePointFinder(data, r);
+            AbstractExtremePointFinder EPF = new ExtremePointFinder(data, this.R);
 
-            //        long[] ExtremePointArr;
             if (isRatio == 1)
+            {
+                // just estimate length of motif
                 EPF.estimateRatio(out ExtremePointArr, out lengthMotif);
+                Console.WriteLine("Sliding window: " + lengthMotif.ToString() + ", R: " + EPF.maxR.ToString() + ", Density: " + (Math.Round(EPF.maxDensity, 2) * 100).ToString() + "%");
+                this.R = EPF.maxR;
+                motifLoc = -1;
+                motifMatches = null;
+                ExtremePointArr = null;
+                return;
+            }
             else
                 EPF.genExtremePoint(out ExtremePointArr, out lengthMotif);
 
-            Console.WriteLine("Sliding window: " + lengthMotif.ToString() + ", R" + EPF.maxR.ToString());
 
             // TODO: calculate standard length of motif cadidates
             Homothety homothey = new Homothety(lengthMotif);

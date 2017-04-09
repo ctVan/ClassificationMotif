@@ -20,9 +20,12 @@ namespace ClassificationMotif
             this.R = R;
             this.distFunc = distFunc;
         }
-
+        public float getR()
+        {
+            return R;
+        }
         public abstract void findMotif(out int motifLoc, out int[] motifMatches);
-        public abstract void findMotif(out int motifLoc, out int[] motifMatches, out long[] ExtremePointArr);
+        public abstract void findMotif(out int motifLoc, out int[] motifMatches, out long[] ExtremePointArr, int isRatio);
     }
 
     public class MotifFinder : AbstractMotifFinder
@@ -65,7 +68,7 @@ namespace ClassificationMotif
             motifMatches = motifMatchesList.ToArray();
         }
 
-        public override void findMotif(out int motifLoc, out int[] motifMatches, out long[] ExtremePointArr)
+        public override void findMotif(out int motifLoc, out int[] motifMatches, out long[] ExtremePointArr, int isRatio)
         {
             throw new NotImplementedException();
         }

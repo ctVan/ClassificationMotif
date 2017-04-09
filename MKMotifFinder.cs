@@ -114,7 +114,7 @@ namespace ClassificationMotif
             }
         } // end finding motif MK
 
-        public override void findMotif(out int motifLoc, out int[] motifMatches, out long[] ExtremePointArr)
+        public override void findMotif(out int motifLoc, out int[] motifMatches, out long[] ExtremePointArr, int isRatio)
         {
             throw new NotImplementedException();
         }

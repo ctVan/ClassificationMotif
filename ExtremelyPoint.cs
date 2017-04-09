@@ -15,12 +15,14 @@ namespace ClassificationMotif
         // compression rate 
         protected float R;
         public float maxR;
+        public double maxDensity;
         public AbstractExtremePointFinder(float[] data, float R)
         {
             this.data = data;
             this.N = data.Length - 1;
             this.R = R;
             maxR = 0;
+            maxDensity = 0;
         }
         public abstract void genExtremePoint(out long[] ExtremePointArr, out int estimatedLength);
         public abstract void estimateRatio(out long[] ExtremePointArr, out int estimatedLength);
@@ -34,7 +36,6 @@ namespace ClassificationMotif
         }
         public override void estimateRatio(out long[] ExtremePointArr, out int estimatedLength)
         {
-            double maxDensity = 0;
             int maxLength = 0;
             for (float j = 1.1f; j < 20; j = j + 0.005f)
             {
@@ -55,6 +56,9 @@ namespace ClassificationMotif
                     i = findMin(i, out min);
                     arr.Add(min);
                 }
+                // add last point
+                if (min != N)
+                    arr.Add(N);
                 ExtremePointArr = arr.ToArray();
                 if (ExtremePointArr.LongLength < 10)
                     continue;
@@ -89,7 +93,7 @@ namespace ClassificationMotif
                     count2++;
             }
             double density = (double)count2 / count1;
-        //    if (density >= 0.5)
+            if (density >= 0.5)
                 Console.WriteLine("R: " + R.ToString() + ", desity: " + (Math.Round(density, 2) * 100).ToString() + "%");
             return density;
         }

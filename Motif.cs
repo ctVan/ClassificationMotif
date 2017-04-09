@@ -52,15 +52,18 @@ namespace ClassificationMotif
             float R = float.Parse(RTxt.Text);
 
             // need to be changed in motif finder
-            //AbstractMotifFinder motifFinder = new MotifFinder(data, slidingWindow, R, new EucleanDistanceArray(data, slidingWindow));
-            AbstractMotifFinder motifFinder = new ExPointMotifFinder(data, slidingWindow, R, new EuclideanDistance(data, slidingWindow));
+            AbstractMotifFinder motifFinder = new ExPointMotifFinder(data, slidingWindow, R, new EuclideanDistance(data, slidingWindow));          
             int motifLoc;
             int[] motifMatches;
             long[] ExtremePointArr;
+
+
+            int isRatio = 1;
+            // estimate length of motif
+            motifFinder.findMotif(out motifLoc, out motifMatches, out ExtremePointArr, isRatio);
             var watch = System.Diagnostics.Stopwatch.StartNew();
-            motifLoc = -1;
             System.Console.WriteLine("\nBegin finding motif ...");
-    //        motifFinder.findMotif(out motifLoc, out motifMatches, out ExtremePointArr);
+            motifFinder.findMotif(out motifLoc, out motifMatches, out ExtremePointArr,0);
             System.Console.WriteLine("Motif finding finish");
             watch.Stop();
             System.Console.WriteLine("Time to find motif : " + watch.ElapsedMilliseconds.ToString());
@@ -71,28 +74,29 @@ namespace ClassificationMotif
                 chartLine.Series["rawData"].Points.AddXY(i, data[i]);
             }
 
-            /*
             int begin, lenMotif;
             if (motifLoc != -1)
             {
-                
+
                 // draw a first motif
                 begin = (int)ExtremePointArr[motifLoc * 2];
                 lenMotif = (int)(ExtremePointArr[motifLoc * 2 + 2] - ExtremePointArr[motifLoc * 2]);
                 for (int i = begin; i < begin + lenMotif; i++)
                 {
-                    chartLine.Series["motif"].Points.AddXY(i, data[i]);
+                    chartLine.Series["motifElement1"].Points.AddXY(i, data[i] - 3);
                 }
-            
-                
+
+
+
                 // draw a list of motif, with MK just 1 motif in list
                 foreach (int loc in motifMatches)
                 {
                     begin = (int)ExtremePointArr[loc * 2];
                     lenMotif = (int)(ExtremePointArr[loc * 2 + 2] - ExtremePointArr[loc * 2]);
+                    Console.WriteLine("length motif 1: " + lenMotif.ToString());
                     for (int i = begin; i < begin + lenMotif; i++)
                     {
-                        chartLine.Series["motif"].Points.AddXY(i, data[i]);
+                        chartLine.Series["motif1"].Points.AddXY(i, data[i]);
                     }
                 }
 
@@ -103,9 +107,10 @@ namespace ClassificationMotif
                 lenMotif = (int)(ExtremePointArr[motifLoc * 2 + 2] - ExtremePointArr[motifLoc * 2]);
                 for (int i = begin; i < begin + lenMotif; i++)
                 {
-                    chartLine.Series["motifElement"].Points.AddXY(i, data[i]);
+                    chartLine.Series["motif2"].Points.AddXY(i, data[i]);
                 }
-                
+                Console.WriteLine("length motif 2: " + lenMotif.ToString());
+
                 // draw a list of motif, with MK just 1 motif in list
                 foreach (int loc in motifMatches)
                 {
@@ -113,14 +118,16 @@ namespace ClassificationMotif
                     lenMotif = (int)(ExtremePointArr[loc * 2 + 2] - ExtremePointArr[loc * 2]);
                     for (int i = begin; i < begin + lenMotif; i++)
                     {
-                        chartLine.Series["motifElement"].Points.AddXY(i, data[i] - 2);
+                        chartLine.Series["motifElement2"].Points.AddXY(i, data[i] - 3);
                     }
                 }
+
             }
-        */
             chartLine.Series["rawData"].Color = Color.Blue;
-            chartLine.Series["motif"].Color = Color.Red;
-            chartLine.Series["motifElement"].Color = Color.Red;
+            chartLine.Series["motif1"].Color = Color.Red;
+            chartLine.Series["motif2"].Color = Color.Red;
+            chartLine.Series["motifElement1"].Color = Color.Red;
+            chartLine.Series["motifElement2"].Color = Color.Blue;
 
         }
 
