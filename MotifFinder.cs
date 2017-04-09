@@ -20,9 +20,8 @@ namespace ClassificationMotif
             this.R = R;
             this.distFunc = distFunc;
         }
-        public float getR()
-        {
-            return R;
+        public void setData(float[] data) {
+            this.data = data;
         }
         public abstract void findMotif(out int motifLoc, out int[] motifMatches);
         public abstract void findMotif(out int motifLoc, out int[] motifMatches, out long[] ExtremePointArr, int isRatio);

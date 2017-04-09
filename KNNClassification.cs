@@ -6,18 +6,14 @@ using System.Threading.Tasks;
 
 namespace ClassificationMotif
 {
-    struct BinaryData
-    {
-        public bool[] data;
-        public String Nhan;
-    }
+
     class KNNClassification
     {
         AbstractDistanceFunction disFunc;
-        BinaryData[] TimeseriesArr;
+        BinaryData[] TimeseriesArrBin;
         int K;
         KNNClassification(BinaryData [] dataArr, int K, AbstractDistanceFunction _disFunc) {
-            this.TimeseriesArr = dataArr;
+            this.TimeseriesArrBin = dataArr;
             this.disFunc = _disFunc;
             this.K = K;
         }
@@ -31,9 +27,9 @@ namespace ClassificationMotif
                 int bestIndex = 0;
                 float bestsoFar = 0;
                 float distance = 0;
-                for (int i = 0; i < TimeseriesArr.Length; i++)
+                for (int i = 0; i < TimeseriesArrBin.Length; i++)
                 {
-                    distance = disFunc.binaryDistance(newTimeseries.data, TimeseriesArr[i].data);
+                    distance = disFunc.binaryDistance(newTimeseries.data, TimeseriesArrBin[i].data);
                     if (bestsoFar > distance) {
                         if (cluster.Contains(i))
                             continue;

@@ -6,13 +6,32 @@ using System.Threading.Tasks;
 
 namespace ClassificationMotif
 {
+    public struct RealData
+    {
+        public float[] data;
+        public String Nhan;
+        public bool exist(float[] timeserie, int motifInx, int lengthMotif, float r) {
+            return false;
+        }
+    }
+    public struct BinaryData
+    {
+        public bool[] data;
+        public String Nhan;
+    }
     public interface IDataLoader
     {
         float[] readFile(string fileName);
+        RealData[] readReadData();
     }
 
     public class DataLoader : IDataLoader
     {
+        public RealData[] readReadData()
+        {
+            throw new NotImplementedException();
+        }
+
         public float[] readFile(string fileName)
         {
             string line;
