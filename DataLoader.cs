@@ -22,14 +22,57 @@ namespace ClassificationMotif
     public interface IDataLoader
     {
         float[] readFile(string fileName);
-        RealData[] readReadData();
+        RealData[] readRealData(string path);
     }
 
     public class DataLoader : IDataLoader
     {
-        public RealData[] readReadData()
+        public RealData[] readRealData(string path)
         {
-            throw new NotImplementedException();
+            List<RealData> realData = new List<RealData>();
+            string line;
+            
+
+            System.IO.StreamReader file = null;
+            System.Console.WriteLine("Opening file " + path + " ...");
+            try
+            {// try open file
+                file = new System.IO.StreamReader(path);
+            }
+            catch (Exception e)
+            {
+                System.Console.WriteLine("Error : " + e.Message.ToString());
+                System.Environment.Exit(1);
+            }
+
+            char[] delimiterChars = { ',' };
+            string[] words;
+
+            // read all data
+            System.Console.WriteLine("Reading data ...");
+            while ((line = file.ReadLine()) != null)
+            {
+                RealData obj = new RealData();
+                List<float> dataList = new List<float>();
+                words = line.Split(delimiterChars);
+                obj.Nhan = words[0].ToString();
+                for (int i = 1; i < words.Length; i++)
+                {
+                    dataList.Add(float.Parse(words[i]));
+                }
+                obj.data = dataList.ToArray();
+                realData.Add(obj);
+            }
+            
+
+            // close file
+            System.Console.WriteLine("Finish reading data");
+      //      System.Console.WriteLine(dataList.Count.ToString() + " data imported");
+            file.Close();
+            file.Dispose();
+
+            // convert back to array and return the array
+            return realData.ToArray();
         }
 
         public float[] readFile(string fileName)

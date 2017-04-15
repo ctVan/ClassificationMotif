@@ -16,11 +16,12 @@ namespace ClassificationMotif
     }
     class FeatureVectorFinder
     {
-        
-        FeatureVectorFinder() { }
-        public BinaryData[] findFeatureVector() {
-            IDataLoader dataLoader = new DataLoader();
-            RealData[] realData = dataLoader.readReadData();
+        float epsilon;
+        public FeatureVectorFinder(float epsilon)
+        {
+            this.epsilon = epsilon;
+        }
+        public BinaryData[] findFeatureVector(RealData[] realData) {
             int N = realData.Length;
             MotiFeature[] motifArr = new MotiFeature[N];
 
@@ -41,7 +42,7 @@ namespace ClassificationMotif
                 // find motif
                 motifFinder.findMotif(out motifLoc, out motifMatches, out ExtremePointArr, 0);
 
-                // draw a first motif
+                // get a first instance as motif of time series
                 begin = (int)ExtremePointArr[motifLoc * 2];
                 lenMotif = (int)(ExtremePointArr[motifLoc * 2 + 2] - ExtremePointArr[motifLoc * 2]);
                 motifArr[i].location = begin;
@@ -52,8 +53,7 @@ namespace ClassificationMotif
 
             // result for return
             BinaryData[] TimeseriesArrBin = new BinaryData[N];
-            // epsilon to determine if subsequence (motif) in current time series
-            float e = 0.001f;
+           
 
 
             for (int i = 0; i < N; i++)
@@ -68,7 +68,7 @@ namespace ClassificationMotif
                     }
 
                     // else 
-                    TimeseriesArrBin[i].data[j] = realData[i].exist(realData[j].data, motifArr[j].location, motifArr[j].length, e);
+                    TimeseriesArrBin[i].data[j] = realData[i].exist(realData[j].data, motifArr[j].location, motifArr[j].length, epsilon);
                 }
             }
             return TimeseriesArrBin;

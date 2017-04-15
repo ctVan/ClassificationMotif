@@ -42,6 +42,7 @@
             this.RTxt = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.btnRun2 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.chartLine)).BeginInit();
             this.SuspendLayout();
             // 
@@ -134,11 +135,22 @@
             this.label2.TabIndex = 6;
             this.label2.Text = "SDW";
             // 
+            // btnRun2
+            // 
+            this.btnRun2.Location = new System.Drawing.Point(879, 690);
+            this.btnRun2.Name = "btnRun2";
+            this.btnRun2.Size = new System.Drawing.Size(75, 23);
+            this.btnRun2.TabIndex = 7;
+            this.btnRun2.Text = "Run2";
+            this.btnRun2.UseVisualStyleBackColor = true;
+            this.btnRun2.Click += new System.EventHandler(this.btnRun2_Click);
+            // 
             // Motif
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1514, 719);
+            this.Controls.Add(this.btnRun2);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.RTxt);
@@ -163,6 +175,7 @@
         private System.Windows.Forms.TextBox RTxt;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button btnRun2;
     }
 }
 

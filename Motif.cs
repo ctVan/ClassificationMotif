@@ -35,18 +35,6 @@ namespace ClassificationMotif
         // this function call all method to complete task
         private void runBtn_Click(object sender, EventArgs e)
         {
-            /*
-            bool[] b1 = { true, false, true, false, false, false };
-            bool[] b2 = { true, false, true, false, true, false };
-            bool[] b3 = { true, true, false, false, false, false };
-
-            EuclideanDistance d = new EuclideanDistance(data, 1);
-            float t;
-            t = d.binaryDistance(b1, b2);
-            t = d.binaryDistance(b1, b3);
-            t = d.binaryDistance(b2, b3);
-            */
-
             // passing data to motif finder
             int slidingWindow = Int32.Parse(SdwTxt.Text);
             float R = float.Parse(RTxt.Text);
@@ -151,6 +139,37 @@ namespace ClassificationMotif
                     MessageBox.Show("Error: Could not read file from disk. Original error: " + ex.Message);
                 }
             }
+        }
+
+        private void btnRun2_Click(object sender, EventArgs e)
+        {
+            IDataLoader dataLoader = new DataLoader();
+            RealData[] realData;
+            OpenFileDialog fileChooser = new OpenFileDialog();
+            string currentDir = Directory.GetCurrentDirectory();
+            string path = Directory.GetParent(currentDir).Parent.FullName;
+            fileChooser.InitialDirectory = path + separator + "dataset";
+            if (fileChooser.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    // load the data
+                    realData = dataLoader.readRealData(fileChooser.FileName);
+                    // epsilon to determine if subsequence (motif) in current time series
+                    float epsilon = 0.01f;
+                    FeatureVectorFinder fvf = new FeatureVectorFinder(epsilon);
+                    BinaryData[] binaryData = fvf.findFeatureVector(realData);
+                    KNNClassification knn = new KNNClassification(binaryData, new EuclideanDistance(null, 0));
+                    string nhan;
+
+                    knn.classify(binaryData[0], out nhan);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error: Could not read file from disk. Original error: " + ex.Message);
+                }
+            }
+            
         }
     }
 }

@@ -51,6 +51,7 @@
     <Compile Include="DataLoader.cs" />
     <Compile Include="DistanceFunction.cs" />
     <Compile Include="ExtremelyPoint.cs" />
+    <Compile Include="FeatureVectorFinder.cs" />
     <Compile Include="Homothety.cs" />
     <Compile Include="KNNClassification.cs" />
     <Compile Include="MKMotifFinder.cs" />
