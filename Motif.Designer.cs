@@ -43,6 +43,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.btnRun2 = new System.Windows.Forms.Button();
+            this.btnRun3 = new System.Windows.Forms.Button();
+            this.btn_test = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.chartLine)).BeginInit();
             this.SuspendLayout();
             // 
@@ -145,11 +147,33 @@
             this.btnRun2.UseVisualStyleBackColor = true;
             this.btnRun2.Click += new System.EventHandler(this.btnRun2_Click);
             // 
+            // btnRun3
+            // 
+            this.btnRun3.Location = new System.Drawing.Point(746, 690);
+            this.btnRun3.Name = "btnRun3";
+            this.btnRun3.Size = new System.Drawing.Size(75, 23);
+            this.btnRun3.TabIndex = 8;
+            this.btnRun3.Text = "Run3";
+            this.btnRun3.UseVisualStyleBackColor = true;
+            this.btnRun3.Click += new System.EventHandler(this.btnRun3_Click);
+            // 
+            // btn_test
+            // 
+            this.btn_test.Location = new System.Drawing.Point(619, 690);
+            this.btn_test.Name = "btn_test";
+            this.btn_test.Size = new System.Drawing.Size(75, 23);
+            this.btn_test.TabIndex = 9;
+            this.btn_test.Text = "test";
+            this.btn_test.UseVisualStyleBackColor = true;
+            this.btn_test.Click += new System.EventHandler(this.btn_test_Click);
+            // 
             // Motif
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1514, 719);
+            this.Controls.Add(this.btn_test);
+            this.Controls.Add(this.btnRun3);
             this.Controls.Add(this.btnRun2);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -176,6 +200,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnRun2;
+        private System.Windows.Forms.Button btnRun3;
+        private System.Windows.Forms.Button btn_test;
     }
 }
 

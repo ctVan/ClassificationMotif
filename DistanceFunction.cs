@@ -16,7 +16,14 @@ namespace ClassificationMotif
             this.data = data;
             this.slidingWindow = slidingWindow;
         }
-
+        public void setData(float[] data)
+        {
+            this.data = data;
+        }
+        public void setSlidingWindow(int slidingWindow)
+        {
+            this.slidingWindow = slidingWindow;
+        }
         public abstract float distance(int t1Loc, int t2Loc);
         public abstract float euclidSquare(float[] sub1, float[] sub2);
         public abstract float binaryDistance(bool[] b1, bool[] b2);
@@ -56,7 +63,7 @@ namespace ClassificationMotif
                 else if (b1[i] == false && b2[i] == false)
                     d++;
             }
-            return (b + c) / (a + b + c + d);
+            return (b + c)*1.0f / (a + b + c + d);
         }
 
         public override float distance(int t1Loc, int t2Loc)

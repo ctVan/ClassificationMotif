@@ -11,7 +11,6 @@ namespace ClassificationMotif
     {
         AbstractDistanceFunction disFunc;
         BinaryData[] TimeseriesArrBin;
-        int K;
         public KNNClassification(BinaryData[] dataArr, AbstractDistanceFunction _disFunc)
         {
             this.TimeseriesArrBin = dataArr;
@@ -36,11 +35,8 @@ namespace ClassificationMotif
                     bestIndex = i;
                 }
             }
-            // just use 1-NN 
-            if (cluster.Count == 0)
-                nhan = null;
-            else
-                nhan = TimeseriesArrBin[bestIndex].Nhan;
+
+            nhan = TimeseriesArrBin[bestIndex].Nhan;
         }
     }
 }

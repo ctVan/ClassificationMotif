@@ -22,9 +22,15 @@ namespace ClassificationMotif
         }
         public void setData(float[] data) {
             this.data = data;
+            distFunc.setData(data);
         }
-        public abstract void findMotif(out int motifLoc, out int[] motifMatches);
+        public void setSlidingWindow(int slidingWindow) {
+            this.slidingWindow = slidingWindow;
+            distFunc.setSlidingWindow(slidingWindow);
+        }
+        public abstract float findMotif(out int motifLoc, out int[] motifMatches);
         public abstract void findMotif(out int motifLoc, out int[] motifMatches, out long[] ExtremePointArr, int isRatio);
+        public abstract void estimateSlidingWindow(out int lenMotif);
     }
 
     public class MotifFinder : AbstractMotifFinder
@@ -34,7 +40,13 @@ namespace ClassificationMotif
         {
 
         }
-        public override void findMotif(out int motifLoc, out int[] motifMatches)
+
+        public override void estimateSlidingWindow(out int lenMotif)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override float findMotif(out int motifLoc, out int[] motifMatches)
         {
             int bestMotifCnt = -1;
             motifLoc = -1;
@@ -65,6 +77,7 @@ namespace ClassificationMotif
             }
             // return
             motifMatches = motifMatchesList.ToArray();
+            return 0;
         }
 
         public override void findMotif(out int motifLoc, out int[] motifMatches, out long[] ExtremePointArr, int isRatio)

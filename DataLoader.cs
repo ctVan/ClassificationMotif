@@ -10,14 +10,28 @@ namespace ClassificationMotif
     {
         public float[] data;
         public String Nhan;
-        public bool exist(float[] timeserie, int motifInx, int lengthMotif, float r) {
+        public bool exist(float[] timeserie, int motifInx, int lengthMotif, float r)
+        {
+            AbstractDistanceFunction disFunc = new EuclideanDistance(data, lengthMotif);
+            for (int i = 0; i < data.Length - lengthMotif; i++)
+            {
+                if (Math.Abs(i - motifInx) >= lengthMotif)
+                {
+                    if (disFunc.distance(i, motifInx) < r)
+                        return true;
+                }
+            }
             return false;
         }
     }
     public struct BinaryData
     {
         public bool[] data;
-        public String Nhan;
+        public string Nhan;
+        public BinaryData(int len) {
+            data = new bool[len];
+            Nhan = null;
+        }
     }
     public interface IDataLoader
     {
@@ -31,7 +45,7 @@ namespace ClassificationMotif
         {
             List<RealData> realData = new List<RealData>();
             string line;
-            
+
 
             System.IO.StreamReader file = null;
             System.Console.WriteLine("Opening file " + path + " ...");
@@ -63,11 +77,11 @@ namespace ClassificationMotif
                 obj.data = dataList.ToArray();
                 realData.Add(obj);
             }
-            
+
 
             // close file
             System.Console.WriteLine("Finish reading data");
-      //      System.Console.WriteLine(dataList.Count.ToString() + " data imported");
+            //      System.Console.WriteLine(dataList.Count.ToString() + " data imported");
             file.Close();
             file.Dispose();
 

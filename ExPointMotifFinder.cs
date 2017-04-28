@@ -27,6 +27,7 @@ namespace ClassificationMotif
 
         }
 
+        // currently hang this branch.
         public override void findMotif(out int motifLoc, out int[] motifMatches, out long[] ExtremePointArr, int isRatio)
         {
             double bestSoFar = Double.MaxValue;
@@ -56,7 +57,7 @@ namespace ClassificationMotif
 
             // create new data array
             int countSubseuquence = 0;
-            float[][] dataArr = new float[ExtremePointArr.Length/2][];
+            float[][] dataArr = new float[ExtremePointArr.Length / 2][];
             for (int i = 0; i < ExtremePointArr.Length - 1; i = i + 2)
             {
                 long begin = ExtremePointArr[i];
@@ -66,7 +67,7 @@ namespace ClassificationMotif
                 else
                     end = ExtremePointArr[i + 2];
 
-               // Console.WriteLine("begin: " + begin.ToString() + ", end: " + end.ToString());
+                // Console.WriteLine("begin: " + begin.ToString() + ", end: " + end.ToString());
                 // copy subsequence to new array
                 float[] inArr;
                 inArr = new float[end - begin];
@@ -78,9 +79,10 @@ namespace ClassificationMotif
             }
 
             // calculate distance
-            Point[] distances = new Point[dataArr.Length];
+            Point[] distances = new Point[dataArr.Length - 1];
             // chose 0 as a reference point
             int refObj = 0;
+            motifLocation1 = refObj;
 
             for (int i = 1; i < dataArr.Length; i++)
             {
@@ -97,6 +99,7 @@ namespace ClassificationMotif
                 {
                     // update bestsofar
                     bestSoFar = dist.distance;
+
                     motifLocation2[0] = i;
                 }
             }
@@ -142,9 +145,19 @@ namespace ClassificationMotif
             slidingWindow = 0;
         }
 
-        public override void findMotif(out int motifLoc, out int[] motifMatches)
+        public override float findMotif(out int motifLoc, out int[] motifMatches)
         {
             throw new NotImplementedException();
+        }
+
+        // current branch -> just use exstremely point for estimating sliding window of motif
+        public override void estimateSlidingWindow(out int lenMotif)
+        {
+            AbstractExtremePointFinder EPF = new ExtremePointFinder(data, this.R);
+            long[] ExtremePointArr;
+            // just estimate length of motif
+            EPF.estimateRatio(out ExtremePointArr, out lenMotif);
+ //           Console.WriteLine("Sliding window: " + lenMotif.ToString() + ", R: " + EPF.maxR.ToString() + ", Density: " + (Math.Round(EPF.maxDensity, 2) * 100).ToString() + "%");
         }
     }
 }

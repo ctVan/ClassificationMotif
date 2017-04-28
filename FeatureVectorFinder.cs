@@ -17,47 +17,52 @@ namespace ClassificationMotif
     class FeatureVectorFinder
     {
         float epsilon;
-        public FeatureVectorFinder(float epsilon)
+        public FeatureVectorFinder()
         {
-            this.epsilon = epsilon;
+            this.epsilon = 0;
         }
         public BinaryData[] findFeatureVector(RealData[] realData) {
             int N = realData.Length;
             MotiFeature[] motifArr = new MotiFeature[N];
 
-            AbstractMotifFinder motifFinder = new ExPointMotifFinder(null, 0, 0, new EuclideanDistance(null, 0));          
+            AbstractMotifFinder EXMotifFinder = new ExPointMotifFinder(null, 0, 0, new EuclideanDistance(null, 0));
+            AbstractMotifFinder MKMotifFinder = new MKMotifFinder(null, 0, 0, new EuclideanDistance(null, 0));  
             int motifLoc;
             int[] motifMatches;
-            long[] ExtremePointArr;
-            int isRatio;
-            // location of motif and its length
-            int begin, lenMotif;
+            int lenMotif;
+
+            // sum of all distance between pairs of motif
+            float sumEpsilon = 0;
+
             // find motif each time series (definately each one have 1 match of motif)
             for (int i = 0; i < N; i++)
             {
-                motifFinder.setData(realData[i].data);
-                isRatio = 1;
-                // estimate length of motif
-                motifFinder.findMotif(out motifLoc, out motifMatches, out ExtremePointArr, isRatio);
+                Console.WriteLine("train i: " + i.ToString());
+                EXMotifFinder.setData(realData[i].data);
+                MKMotifFinder.setData(realData[i].data);
+                // estimate length of motif                
+                EXMotifFinder.estimateSlidingWindow(out lenMotif);
                 // find motif
-                motifFinder.findMotif(out motifLoc, out motifMatches, out ExtremePointArr, 0);
+                MKMotifFinder.setSlidingWindow(lenMotif);
+                sumEpsilon += MKMotifFinder.findMotif(out motifLoc,out motifMatches);
 
                 // get a first instance as motif of time series
-                begin = (int)ExtremePointArr[motifLoc * 2];
-                lenMotif = (int)(ExtremePointArr[motifLoc * 2 + 2] - ExtremePointArr[motifLoc * 2]);
-                motifArr[i].location = begin;
+                motifArr[i].location = motifLoc;
                 motifArr[i].length = lenMotif;
             }
             // have all motif of time series
             // -> get feature vecter of them
-
+            
             // result for return
             BinaryData[] TimeseriesArrBin = new BinaryData[N];
-           
+            // estimate epsilon: e = avg * 1.1
+            epsilon = (sumEpsilon / N) * 1.1f;
 
 
             for (int i = 0; i < N; i++)
             {
+                TimeseriesArrBin[i] = new BinaryData(N);
+                TimeseriesArrBin[i].Nhan = realData[i].Nhan;
                 for (int j = 0; j < N; j++)
                 {
                     // motif is gotten from this time series

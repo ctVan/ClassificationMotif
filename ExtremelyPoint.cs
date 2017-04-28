@@ -37,7 +37,7 @@ namespace ClassificationMotif
         public override void estimateRatio(out long[] ExtremePointArr, out int estimatedLength)
         {
             int maxLength = 0;
-            for (float j = 1.1f; j < 20; j = j + 0.005f)
+            for (float j = 1.05f; j < 20; j = j + 0.005f)
             {
                 R = j;
                 long min, max;
@@ -60,7 +60,7 @@ namespace ClassificationMotif
                 if (min != N)
                     arr.Add(N);
                 ExtremePointArr = arr.ToArray();
-                if (ExtremePointArr.LongLength < 10)
+                if (ExtremePointArr.LongLength < 4)
                     continue;
                 double density = estimateLength(ExtremePointArr, out estimatedLength);
                 if (density > maxDensity) {
@@ -93,8 +93,8 @@ namespace ClassificationMotif
                     count2++;
             }
             double density = (double)count2 / count1;
-            if (density >= 0.5)
-                Console.WriteLine("R: " + R.ToString() + ", desity: " + (Math.Round(density, 2) * 100).ToString() + "%");
+  //          if (density >= 0.5)
+   //             Console.WriteLine("R: " + R.ToString() + ", desity: " + (Math.Round(density, 2) * 100).ToString() + "%");
             return density;
         }
 

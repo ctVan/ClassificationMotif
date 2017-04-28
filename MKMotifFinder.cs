@@ -13,8 +13,8 @@ namespace ClassificationMotif
         public struct Point
         {
             public int location;
-            public double distance;
-            public Point(int location, double distance)
+            public float distance;
+            public Point(int location, float distance)
             {
                 this.location = location;
                 this.distance = distance;
@@ -27,9 +27,9 @@ namespace ClassificationMotif
 
         }
 
-        public override void findMotif(out int motifLoc, out int[] motifMatches)
+        public override float findMotif(out int motifLoc, out int[] motifMatches)
         {
-            double bestSoFar = Double.MaxValue;
+            float bestSoFar = float.MaxValue;
             int motifLocation1 = -1;
             int[] motifLocation2 = { -1 };
 
@@ -73,10 +73,11 @@ namespace ClassificationMotif
 
             // find two susequence have the minimum distance (motif as concept of MK)
             findMotifMK(m, points, bestSoFar, ref motifLocation1, ref motifLocation2);
-            Console.WriteLine("value: " + distFunc.distance(motifLocation1, motifLocation2[0]));
+  //          Console.WriteLine("value: " + distFunc.distance(motifLocation1, motifLocation2[0]));
             // Return to the caller
             motifLoc = motifLocation1;
             motifMatches = motifLocation2;
+            return (float)bestSoFar;
         }
 
         public void findMotifMK(int m, Point[] distances, double bestSoFar, ref int motifLocation1, ref int[] motifLocation2)
@@ -115,6 +116,11 @@ namespace ClassificationMotif
         } // end finding motif MK
 
         public override void findMotif(out int motifLoc, out int[] motifMatches, out long[] ExtremePointArr, int isRatio)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void estimateSlidingWindow(out int lenMotif)
         {
             throw new NotImplementedException();
         }
