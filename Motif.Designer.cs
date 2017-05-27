@@ -42,9 +42,11 @@
             this.RTxt = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.btnRun2 = new System.Windows.Forms.Button();
-            this.btnRun3 = new System.Windows.Forms.Button();
+            this.btnTrainFV = new System.Windows.Forms.Button();
+            this.MKmotif = new System.Windows.Forms.Button();
             this.btn_test = new System.Windows.Forms.Button();
+            this.btn_testKNN = new System.Windows.Forms.Button();
+            this.btn_bronwnKNN = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.chartLine)).BeginInit();
             this.SuspendLayout();
             // 
@@ -91,7 +93,7 @@
             this.runBtn.Name = "runBtn";
             this.runBtn.Size = new System.Drawing.Size(75, 23);
             this.runBtn.TabIndex = 1;
-            this.runBtn.Text = "Run";
+            this.runBtn.Text = "BF";
             this.runBtn.UseVisualStyleBackColor = true;
             this.runBtn.Click += new System.EventHandler(this.runBtn_Click);
             // 
@@ -137,25 +139,25 @@
             this.label2.TabIndex = 6;
             this.label2.Text = "SDW";
             // 
-            // btnRun2
+            // btnTrainFV
             // 
-            this.btnRun2.Location = new System.Drawing.Point(879, 690);
-            this.btnRun2.Name = "btnRun2";
-            this.btnRun2.Size = new System.Drawing.Size(75, 23);
-            this.btnRun2.TabIndex = 7;
-            this.btnRun2.Text = "Run2";
-            this.btnRun2.UseVisualStyleBackColor = true;
-            this.btnRun2.Click += new System.EventHandler(this.btnRun2_Click);
+            this.btnTrainFV.Location = new System.Drawing.Point(733, 689);
+            this.btnTrainFV.Name = "btnTrainFV";
+            this.btnTrainFV.Size = new System.Drawing.Size(75, 23);
+            this.btnTrainFV.TabIndex = 7;
+            this.btnTrainFV.Text = "TrainFV";
+            this.btnTrainFV.UseVisualStyleBackColor = true;
+            this.btnTrainFV.Click += new System.EventHandler(this.btnTrainFV_Click);
             // 
-            // btnRun3
+            // MKmotif
             // 
-            this.btnRun3.Location = new System.Drawing.Point(746, 690);
-            this.btnRun3.Name = "btnRun3";
-            this.btnRun3.Size = new System.Drawing.Size(75, 23);
-            this.btnRun3.TabIndex = 8;
-            this.btnRun3.Text = "Run3";
-            this.btnRun3.UseVisualStyleBackColor = true;
-            this.btnRun3.Click += new System.EventHandler(this.btnRun3_Click);
+            this.MKmotif.Location = new System.Drawing.Point(860, 689);
+            this.MKmotif.Name = "MKmotif";
+            this.MKmotif.Size = new System.Drawing.Size(75, 23);
+            this.MKmotif.TabIndex = 8;
+            this.MKmotif.Text = "MK";
+            this.MKmotif.UseVisualStyleBackColor = true;
+            this.MKmotif.Click += new System.EventHandler(this.btnMKmotif_Click);
             // 
             // btn_test
             // 
@@ -163,18 +165,40 @@
             this.btn_test.Name = "btn_test";
             this.btn_test.Size = new System.Drawing.Size(75, 23);
             this.btn_test.TabIndex = 9;
-            this.btn_test.Text = "test";
+            this.btn_test.Text = "testFV";
             this.btn_test.UseVisualStyleBackColor = true;
-            this.btn_test.Click += new System.EventHandler(this.btn_test_Click);
+            this.btn_test.Click += new System.EventHandler(this.btnTestFV_Click);
+            // 
+            // btn_testKNN
+            // 
+            this.btn_testKNN.Location = new System.Drawing.Point(371, 693);
+            this.btn_testKNN.Name = "btn_testKNN";
+            this.btn_testKNN.Size = new System.Drawing.Size(75, 23);
+            this.btn_testKNN.TabIndex = 10;
+            this.btn_testKNN.Text = "testKNN";
+            this.btn_testKNN.UseVisualStyleBackColor = true;
+            this.btn_testKNN.Click += new System.EventHandler(this.btn_testKNN_Click);
+            // 
+            // btn_bronwnKNN
+            // 
+            this.btn_bronwnKNN.Location = new System.Drawing.Point(482, 689);
+            this.btn_bronwnKNN.Name = "btn_bronwnKNN";
+            this.btn_bronwnKNN.Size = new System.Drawing.Size(75, 23);
+            this.btn_bronwnKNN.TabIndex = 11;
+            this.btn_bronwnKNN.Text = "SourceKNN";
+            this.btn_bronwnKNN.UseVisualStyleBackColor = true;
+            this.btn_bronwnKNN.Click += new System.EventHandler(this.btn_bronwnKNN_Click);
             // 
             // Motif
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1514, 719);
+            this.Controls.Add(this.btn_bronwnKNN);
+            this.Controls.Add(this.btn_testKNN);
             this.Controls.Add(this.btn_test);
-            this.Controls.Add(this.btnRun3);
-            this.Controls.Add(this.btnRun2);
+            this.Controls.Add(this.MKmotif);
+            this.Controls.Add(this.btnTrainFV);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.RTxt);
@@ -199,9 +223,11 @@
         private System.Windows.Forms.TextBox RTxt;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button btnRun2;
-        private System.Windows.Forms.Button btnRun3;
+        private System.Windows.Forms.Button btnTrainFV;
+        private System.Windows.Forms.Button MKmotif;
         private System.Windows.Forms.Button btn_test;
+        private System.Windows.Forms.Button btn_testKNN;
+        private System.Windows.Forms.Button btn_bronwnKNN;
     }
 }
 

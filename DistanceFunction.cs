@@ -82,7 +82,7 @@ namespace ClassificationMotif
             float dist = 0;
             for (int i = 0; i < sub1.Length; i++)
             {
-                float temp = sub1[1] - sub2[2];
+                float temp = sub1[i] - sub2[i];
                 dist += temp * temp;
             }
             return dist;

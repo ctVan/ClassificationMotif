@@ -34,14 +34,18 @@ namespace ClassificationMotif
             // sum of all distance between pairs of motif
             float sumEpsilon = 0;
 
+            int c = 0;
             // find motif each time series (definately each one have 1 match of motif)
             for (int i = 0; i < N; i++)
             {
-                Console.WriteLine("train i: " + i.ToString());
+                
                 EXMotifFinder.setData(realData[i].data);
                 MKMotifFinder.setData(realData[i].data);
                 // estimate length of motif                
                 EXMotifFinder.estimateSlidingWindow(out lenMotif);
+     //           Console.WriteLine("train i= " + i.ToString()+" :" + lenMotif.ToString() + " " + c.ToString());
+                if (lenMotif == 0)
+                    c++;
                 // find motif
                 MKMotifFinder.setSlidingWindow(lenMotif);
                 sumEpsilon += MKMotifFinder.findMotif(out motifLoc,out motifMatches);

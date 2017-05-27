@@ -37,13 +37,21 @@ namespace ClassificationMotif
         public override void estimateRatio(out long[] ExtremePointArr, out int estimatedLength)
         {
             int maxLength = 0;
-            for (float j = 1.05f; j < 20; j = j + 0.005f)
+            for (float j = 1.01f; j <= 2.0f; j = j + 0.05f)
             {
                 R = j;
                 long min, max;
                 List<long> arr = new List<long>();
-                arr.Add(0);
                 long i = findFisrtTwo(out max, out min);
+                if (min < max)
+                {
+                    arr.Add(min);
+                    arr.Add(max);
+                }
+                else {
+                    arr.Add(max);
+                    arr.Add(min);
+                }
                 if (i < N && data[i] > data[0])
                 {
                     i = findMin(i, out min);
@@ -63,7 +71,8 @@ namespace ClassificationMotif
                 if (ExtremePointArr.LongLength < 4)
                     continue;
                 double density = estimateLength(ExtremePointArr, out estimatedLength);
-                if (density > maxDensity) {
+                if (density > maxDensity)
+                {
                     maxDensity = density;
                     maxR = R;
                     maxLength = estimatedLength;
@@ -93,8 +102,8 @@ namespace ClassificationMotif
                     count2++;
             }
             double density = (double)count2 / count1;
-  //          if (density >= 0.5)
-   //             Console.WriteLine("R: " + R.ToString() + ", desity: " + (Math.Round(density, 2) * 100).ToString() + "%");
+            //          if (density >= 0.5)
+            //             Console.WriteLine("R: " + R.ToString() + ", desity: " + (Math.Round(density, 2) * 100).ToString() + "%");
             return density;
         }
 
@@ -105,12 +114,12 @@ namespace ClassificationMotif
             long min, max;
             List<long> arr = new List<long>();
             arr.Add(0);
-            long i = findFisrtTwo(out max,out min);
+            long i = findFisrtTwo(out max, out min);
             if (i < N && data[i] > data[0])
             {
-                i = findMin(i,out min);
+                i = findMin(i, out min);
                 arr.Add(min);
-            } 
+            }
             while (i < N)
             {
                 i = findMax(i, out max);
@@ -186,13 +195,12 @@ namespace ClassificationMotif
                 if (data[i] > data[imax])
                     imax = i;
 
-          //      Console.WriteLine("(" + data[imax].ToString() + " " + data[i].ToString() + ")");
+                //      Console.WriteLine("(" + data[imax].ToString() + " " + data[i].ToString() + ")");
                 i++;
-                while (i < N && data[i] == 0 )
+                while (i < N && data[i] == 0)
                     i++;
             }
             max = imax;
-
             return i;
         }
     }
